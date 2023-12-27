@@ -1,17 +1,27 @@
 import React from "react";
-import { Modal } from "../Util/modal";
+import { Card } from "../Util/card/card";
+import './SignUpPage.css'
 export function SignUpPage(){
     return(
         <>
-        <div>
+        <div className="signUpHeader">
             Header Comp
         </div>
-        <div>
-            <Modal>
-                <div>signup</div>
-            </Modal>
+        <div className="signUpBody">
+            <Card>
+                <>
+                    <div>
+                        Username
+                        <input></input>
+                    </div>
+                    <div>
+                        Password
+                        <></>
+                    </div>
+                </>
+            </Card>
         </div>
-        <div>
+        <div className="signUpFooter">
             Footer comp
         </div>
         
