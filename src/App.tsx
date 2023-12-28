@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import {SignUpPage} from './signUpPage/signUpPage'
+import {DriverCard} from './teamCreation/driverCard/driverCard'
 
 
 function App() {
@@ -10,9 +11,9 @@ function App() {
 
   return (
     <>
-      <SignUpPage/>
+      <DriverCard></DriverCard>
     </>
-  )
+  ) 
 }
 
 export default App

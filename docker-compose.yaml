@@ -11,6 +11,7 @@ services:
      - type: bind
        source: ./
        target: /srv/app
+    - ../server/src/model:/srv/server/src/model
    tty: true
    command: entrypoint.sh
    

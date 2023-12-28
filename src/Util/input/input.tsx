@@ -1,7 +1,7 @@
-function Input(input:string){
+export function Input(props:{inputName:string}){
     return(
         <div className="customInput">
-                {input}
+                {props.inputName}
                 <input></input>
         </div>
     )
