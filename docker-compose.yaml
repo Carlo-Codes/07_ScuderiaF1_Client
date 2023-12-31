@@ -8,11 +8,13 @@ services:
      - 8000:8000
    working_dir: /srv/app
    volumes:
-     - type: bind
-       source: ./
-       target: /srv/app
-    - ../server/src/model:/srv/server/src/model
+      - .:/srv/app
+      - /srv/app/node_modules
+      #- ../server/src/model:/srv/server/src/model
    tty: true
    command: entrypoint.sh
    
+
+volumes:
+  node_modules:
    
