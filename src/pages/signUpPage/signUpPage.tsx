@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Card } from "../Util/card/card";
+import { Card } from "../../Util/card/card";
 import './SignUpPage.css'
-import { Input } from "../Util/input/input";
+import { Input } from "../../Util/input/input";
 
 export function SignUpPage(){
 

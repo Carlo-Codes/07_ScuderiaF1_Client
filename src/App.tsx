@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import {SignUpPage} from './signUpPage/signUpPage'
 import {DriverCard} from './driverCard/driverCard'
+import {DriverSelectionCard} from './driverCard/driverSelectionCard'
 import {apiSportsDriver} from '@backend/apiSportsResponseTypes'
 
 const driver:apiSportsDriver = {
@@ -19,7 +20,7 @@ function App() {
 
   return (
     <>
-      
+      <DriverSelectionCard drivers={[driver]}></DriverSelectionCard>
     </>
   ) 
 }
