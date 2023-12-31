@@ -1,5 +1,4 @@
+#!/bin/sh
 ls
 npm install -g
-npm i
 npm run dev
-
