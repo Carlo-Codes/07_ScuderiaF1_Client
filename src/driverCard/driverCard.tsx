@@ -8,7 +8,7 @@ export function DriverCard(props:{driver:apiSportsDriver}){
     const driver =
         <Card>
             <>
-                <div className="driver">
+                <div className="driverCard">
                     <img></img>
                     {props.driver.name}
                 </div>

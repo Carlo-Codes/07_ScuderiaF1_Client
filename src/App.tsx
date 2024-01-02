@@ -9,7 +9,7 @@ import {apiSportsDriver} from '@backend/apiSportsResponseTypes'
 
 const driver:apiSportsDriver = {
   id: 1,
-  name: 'max vestappen',
+  name: 'Max Verstappen',
   abbr: 'ves',
   number: 1,
   image: "test image"

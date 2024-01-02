@@ -1,21 +1,32 @@
-import React, { OptionHTMLAttributes } from "react"
+import React, { OptionHTMLAttributes, useState } from "react"
 import { Card } from "../Util/card/card"
 import { apiSportsDriver } from "@backend/apiSportsResponseTypes";
+import './driverCard.css'
+import { DriverPicture } from "./DriverPicture";
 
 export function DriverSelectionCard(props:{drivers:apiSportsDriver[]}){
+
+    const [selection, setSelection] = useState('Select one...')
+
+    const handleSelectionChange = (e:React.ChangeEvent<HTMLSelectElement>) => {
+        setSelection(e.target.value);
+    }
     
     const options = props.drivers.map((driver) => 
-        <option value={driver.id}>{driver.name}</option>
+        <option key={driver.id} value={driver.name}>{driver.name}</option>
+    )
+    options.push(
+        <option key='00' hidden>Select one...</option>
     )
 
     const driverselection =
         <Card>
             <>
-                <div className="driver">
-                    <img></img>
+                <div className="driverCard">
                     <div>Tier</div>
-                    <label htmlFor="drivers"> Choose Driver</label>
-                    <select name="drivers" id="drivers">
+                    <DriverPicture driverName={selection}></DriverPicture>
+                    <label htmlFor="drivers"> Choose Driver </label>
+                    <select name="drivers" id="drivers" defaultValue={selection} onChange={handleSelectionChange}>
                         {options}
                     </select>
                 </div>

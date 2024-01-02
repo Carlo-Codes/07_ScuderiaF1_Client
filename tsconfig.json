@@ -9,10 +9,8 @@
     "rootDir": "../../",
     "paths":{ 
       "@backend/*" : ["../server/src/model/*"],
-
-    
-    
     },
+    "types": ["vite/client"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",

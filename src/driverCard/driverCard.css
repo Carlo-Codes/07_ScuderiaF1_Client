@@ -1,0 +1,4 @@
+.driverCard{
+    display:flex;
+    flex-direction: row;
+}
