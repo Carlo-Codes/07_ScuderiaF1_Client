@@ -7,6 +7,8 @@ import {DriverCard} from './driverCard/driverCard'
 import {DriverSelectionCard} from './driverCard/driverSelectionCard'
 import {apiSportsDriver} from '@backend/apiSportsResponseTypes'
 import { TeamCreationPage } from './pages/teamCreationPage/teamCreationPage';
+import { LeagueRankingPage } from './pages/leagueRankingPage/leagueRankingPage';
+import {League, Team} from '@backend/dbTypes'
 
 const driver:apiSportsDriver = {
   id: 1,
@@ -23,12 +25,19 @@ const driver2:apiSportsDriver = {
   image: "test image"
 }
 
+const testLeague:League={
+  id:1,
+  owner_user_id:3,
+  league_name:"testLeague",
+  inviteCode:"hgfdsa"
+}
+
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      <TeamCreationPage></TeamCreationPage>
+      <LeagueRankingPage league={testLeague}></LeagueRankingPage>
     </>
   ) 
 }

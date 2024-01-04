@@ -1,7 +1,7 @@
 import React from "react";
 import {apiSportsDriver} from '@backend/apiSportsResponseTypes'
-import { DriverSelectionCard } from "../../driverCard/driverSelectionCard";
-import {TrackCard} from "../../trackCard/trackCard"
+import { DriverSelectionCard } from "./driverCard/driverSelectionCard";
+import {TrackCard} from "../teamCreationPage/trackCard/trackCard"
 
 export function TeamCreationPage(){
 

@@ -1,5 +1,5 @@
 import React from "react";
-import {Card} from '../Util/card/card'
+import {Card} from '../../../Util/card/card'
 
 export function TrackCard(props:{trackName:string}){
     return (
