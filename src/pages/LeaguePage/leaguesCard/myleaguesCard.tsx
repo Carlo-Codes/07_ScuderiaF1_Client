@@ -1,5 +1,6 @@
 import {Card} from '../../../Util/card/card'
 import {League} from '@backend/dbTypes'
+import './leaguesCard.css'
 
 export function MyLeaguesCard(props:{leagues:League[]}){
 
@@ -7,8 +8,8 @@ export function MyLeaguesCard(props:{leagues:League[]}){
         return (
             <li className='myLeague'>
                 <div className='myLeagueCard'>
-                    <div className='myLeagueName'>{league.league_name}</div>
-                    <div className='myLeagueInviteCode'>{league.inviteCode}</div>
+                    <div className='LeagueName'>{league.league_name}</div>
+                    <div className='myLeagueInviteCode'>Invite : {league.inviteCode}</div>
                 </div>
             </li>
         )

@@ -1,0 +1,4 @@
+.leaguePage{
+    display: flex;
+    flex-direction: column;
+}

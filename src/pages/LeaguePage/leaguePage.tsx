@@ -3,6 +3,7 @@ import {League} from '@backend/dbTypes'
 import { CreateLeagueCard } from "./leaguesCard/createLeagueCard";
 import { MyLeaguesCard } from "./leaguesCard/myleaguesCard";
 import { LeaguesCard } from "./leaguesCard/leaguesCard"; 
+import './leaguePage.css'
 
 const league1 : League = {
     id:1,

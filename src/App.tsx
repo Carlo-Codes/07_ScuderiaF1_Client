@@ -10,6 +10,7 @@ import { TeamCreationPage } from './pages/teamCreationPage/teamCreationPage';
 import { LeagueRankingPage } from './pages/leagueRankingPage/leagueRankingPage';
 import {League, Team} from '@backend/dbTypes'
 import { TeamPointPage } from './pages/teamPages/teamPointsPage';
+import { LeaguePage } from './pages/LeaguePage/leaguePage';
 
 const driver:apiSportsDriver = {
   id: 1,
@@ -38,7 +39,7 @@ function App() {
 
   return (
     <>
-      <TeamPointPage></TeamPointPage>
+       <LeaguePage></LeaguePage>
     </>
   ) 
 }
