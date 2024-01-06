@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "../Util/card/card";
+import { Card } from "../../../Util/card/card";
 import {apiSportsDriver} from '@backend/apiSportsResponseTypes'
 
 export function DriverCard(props:{driver:apiSportsDriver}){
