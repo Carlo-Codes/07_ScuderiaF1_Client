@@ -8,9 +8,16 @@ const images:string[] = []
 
 export function DriverPicture(props:{driverName:string}){
 
-    return (
-        <img className="driverPicture" src={`./src/assets/driverImages/${props.driverName}.png`}></img>
-    )
+    if(props.driverName != "Select one..."){
+        return (
+            <img className="driverPicture" src={`./src/assets/driverImages/${props.driverName}.png`}></img>
+        )
+    }
+    else{
+        return (
+            <></>
+        )
+    }
     
 
 }

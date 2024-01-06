@@ -1,0 +1,17 @@
+.trackSelectionCard{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.arrow{
+    padding: 20px;
+    margin: auto;
+    font-size: 100px;
+}
+
+.title{
+    font-weight: bold;
+    margin: 10px
+}

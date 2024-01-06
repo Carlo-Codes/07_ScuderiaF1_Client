@@ -6,7 +6,7 @@ import {SignUpPage} from './pages/signUpPage/signUpPage'
 import {DriverCard} from './driverCard/driverCard'
 import {DriverSelectionCard} from './driverCard/driverSelectionCard'
 import {apiSportsDriver} from '@backend/apiSportsResponseTypes'
-import { TeamCreationPage } from './pages/teamCreationPage/teamCreationPage';
+import { TeamCreationPage } from './pages/teamPages/teamCreationPage';
 import { LeagueRankingPage } from './pages/leagueRankingPage/leagueRankingPage';
 import {League, Team} from '@backend/dbTypes'
 import { TeamPointPage } from './pages/teamPages/teamPointsPage';
@@ -39,7 +39,7 @@ function App() {
 
   return (
     <>
-       <SignUpPage></SignUpPage>
+       <TeamCreationPage></TeamCreationPage>
     </>
   ) 
 }
