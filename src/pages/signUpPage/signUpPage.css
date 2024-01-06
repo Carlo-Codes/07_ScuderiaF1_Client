@@ -1,14 +1,45 @@
 .signUpHeader{
+    position: relative;
     height: 40px;
 }
 
 .signUpFooter{
+    text-align: center;
+    margin-top: auto;
+
 
 }
 
 .signUpBody{
-    
+    display: flex;
+    flex-direction: column;
+}
+
+.signUpPage{
+    height: 90dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+.stateChanger{
+    display: flex;
+    flex-direction: column;
+}
+
+.stateChangerTitle{
+    font-weight: bold;
+    margin: 5px;
+}
+
+.interactionInternals input{
+    display: flex;
+    flex-direction: column;
+    align-items:flex-end;
 }
 
 
 
+
+
+
+ 

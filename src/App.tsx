@@ -2,7 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import {SignUpPage} from './signUpPage/signUpPage'
+import {SignUpPage} from './pages/signUpPage/signUpPage'
 import {DriverCard} from './driverCard/driverCard'
 import {DriverSelectionCard} from './driverCard/driverSelectionCard'
 import {apiSportsDriver} from '@backend/apiSportsResponseTypes'
@@ -39,7 +39,7 @@ function App() {
 
   return (
     <>
-       <LeaguePage></LeaguePage>
+       <SignUpPage></SignUpPage>
     </>
   ) 
 }
