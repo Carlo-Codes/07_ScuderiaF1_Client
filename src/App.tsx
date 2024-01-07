@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -11,6 +11,7 @@ import { LeagueRankingPage } from './pages/leagueRankingPage/leagueRankingPage';
 import {League, Team} from '@backend/dbTypes'
 import { TeamPointPage } from './pages/teamPages/teamPointsPage';
 import { LeaguePage } from './pages/LeaguePage/leaguePage';
+import {NavBar} from './Util/UI/navBar/navBar'
 
 const driver:apiSportsDriver = {
   id: 1,
@@ -34,14 +35,63 @@ const testLeague:League={
   inviteCode:"hgfdsa"
 }
 
-function App() {
-  const [count, setCount] = useState(0)
+export interface navItemInterface{
+  name:string,
+  stateChanger:(state: string) => void
+}
+
+export function App() {
+  const [state, setState] = useState('Leagues')
+
+  const stateChanger = (state:string)=>{
+    setState(state)
+  }
+
+  enum States {
+    Login = 'Login',
+    Home = 'Home',
+    Leagues = 'Leagues',
+    Account = 'Account',
+    Teams = 'Teams',
+  }
+ 
+  const navItems = (Object.keys(States) as Array<string>).map((stateString) => {
+    return (
+      {
+        name:stateString,
+        stateChanger:stateChanger
+      }
+    )
+  })
+
+
+  let page: React.ReactNode
+
+  if(state == States.Login){
+    page = <SignUpPage></SignUpPage>
+  }
+  if(state == States.Home){
+
+  }
+  if(state == States.Leagues){
+    page = <LeaguePage></LeaguePage>
+  }
+  if(state == States.Account){
+
+  }
+  if(state == States.Teams){
+    <TeamPointPage></TeamPointPage>
+  }
+
+
 
   return (
     <>
-       <TeamCreationPage></TeamCreationPage>
+       <NavBar navItems={navItems}>
+        {page}
+       </NavBar>
     </>
   ) 
 }
 
-export default App
+

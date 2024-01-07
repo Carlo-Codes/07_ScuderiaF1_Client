@@ -9,8 +9,7 @@ export function DriverPointsCard(props:{selectionParam:string, driver:apiSportsD
 
 
     const driverselection =
-        <Card>
-            <>
+
                 <div className="driverCard">
                     <div className="selectionParam">{props.tier}</div>
                     <DriverPicture driverName={props.driver.name}></DriverPicture>
@@ -18,8 +17,6 @@ export function DriverPointsCard(props:{selectionParam:string, driver:apiSportsD
                         {props.points}
                     </div>
                 </div>
-            </>
-        </Card>
 
 
 

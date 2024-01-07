@@ -2,6 +2,8 @@ import React from "react";
 import {apiSportsDriver} from '@backend/apiSportsResponseTypes'
 import { DriverSelectionCard } from "./driverCard/driverSelectionCard";
 import {TrackCard} from "../teamPages/trackCard/trackCard"
+import { Card } from "../../Util/card/card";
+import {TeamPageBase} from './teamPageBase'
 
 export function TeamCreationPage(){
 
@@ -47,10 +49,11 @@ export function TeamCreationPage(){
     }
 
     return (
-        <div className="teamCreationContainer">
-            <TrackCard trackName="Circuit de Spa-Francorchamps"></TrackCard>
+        <TeamPageBase>
+            <div className="teamCreationCardInternals">
                 {driverSelectionCards}
-            <button>Ok</button>
-        </div>
+                <button>Save</button>
+            </div>
+        </TeamPageBase>
     )
 }

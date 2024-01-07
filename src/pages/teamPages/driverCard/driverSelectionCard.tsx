@@ -15,18 +15,13 @@ export function DriverSelectionCard(props:{selectionParam:string, driverOptions:
 
 
     const driverselection =
-        <Card>
-            <>
                 <div className="driverCard">
                     <div className="selectionParam">{props.selectionParam}</div>
                     <DriverPicture driverName={selection}></DriverPicture>
-                    <label htmlFor="drivers"> Choose Driver </label>
                     <select name="drivers" id="drivers" defaultValue={selection} onChange={handleSelectionChange}>
                         {props.driverOptions}
                     </select>
                 </div>
-            </>
-        </Card>
 
 
 

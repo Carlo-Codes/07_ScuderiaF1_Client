@@ -3,5 +3,17 @@
     flex-direction: row;
     max-height: 80px;
     min-height: 80px;
-    justify-content: center;
+    justify-content: space-between;
+    margin: 10px;
+}
+
+.driverCard select, label, .selectionParam{
+    align-self: center;
+}
+
+.driverCard img{
+    object-fit: cover;
+    width: 15%;
+    
+   
 }
