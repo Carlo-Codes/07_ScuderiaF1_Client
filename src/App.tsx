@@ -12,6 +12,8 @@ import {League, Team} from '@backend/dbTypes'
 import { TeamPointPage } from './pages/teamPages/teamPointsPage';
 import { LeaguePage } from './pages/LeaguePage/leaguePage';
 import {NavBar} from './Util/UI/navBar/navBar'
+import {dataResponse} from '@backend/HTTPtypes'
+import {login} from './apis/auth'
 
 const driver:apiSportsDriver = {
   id: 1,
@@ -41,10 +43,17 @@ export interface navItemInterface{
 }
 
 export function App() {
+  const [LogInState, setLogin] = useState(false)
   const [state, setState] = useState('Leagues')
+  const [userData, setUserData] = useState<dataResponse>()
+  const [accessToken, setAccessToken] = useState<string>()
 
   const stateChanger = (state:string)=>{
     setState(state)
+  }
+
+  if(accessToken){
+    setLogin(true)
   }
 
   enum States {
@@ -55,21 +64,23 @@ export function App() {
     Teams = 'Teams',
   }
  
-  const navItems = (Object.keys(States) as Array<string>).map((stateString) => {
-    return (
-      {
-        name:stateString,
-        stateChanger:stateChanger
-      }
-    )
-  })
-
+  const navItems:navItemInterface[] = [
+    {
+      name:States.Home,
+      stateChanger:stateChanger
+    },
+    {
+      name:States.Leagues,
+      stateChanger:stateChanger
+    },
+    {
+      name:States.Account,
+      stateChanger:stateChanger
+    }
+  ]
 
   let page: React.ReactNode
 
-  if(state == States.Login){
-    page = <SignUpPage></SignUpPage>
-  }
   if(state == States.Home){
 
   }
@@ -80,18 +91,23 @@ export function App() {
 
   }
   if(state == States.Teams){
-    <TeamPointPage></TeamPointPage>
+    page = <TeamPointPage></TeamPointPage>
   }
 
 
-
-  return (
-    <>
-       <NavBar navItems={navItems}>
-        {page}
-       </NavBar>
-    </>
-  ) 
+  if(LogInState){
+    return (
+      <>
+         <NavBar navItems={navItems}>
+          {page}
+         </NavBar>
+      </>
+    )   
+  } else{
+    return (
+      <SignUpPage setAppAccessToken={setAccessToken}></SignUpPage>
+    )
+  }
 }
 
 

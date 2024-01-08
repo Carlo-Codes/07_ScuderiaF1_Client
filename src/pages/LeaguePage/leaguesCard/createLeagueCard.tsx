@@ -18,7 +18,7 @@ export function CreateLeagueCard(){
 
                 <div className='CreateLeagueInput'>
                     <label htmlFor='simulation'>Simulation</label>
-                    <input type='radio' id='simulation'></input>
+                    <input type='checkbox' id='simulation'></input>
                 </div>
 
                 <div className='buttons'>
