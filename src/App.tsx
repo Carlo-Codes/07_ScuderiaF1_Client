@@ -52,9 +52,7 @@ export function App() {
     setState(state)
   }
 
-  if(accessToken){
-    setLogin(true)
-  }
+
 
   enum States {
     Login = 'Login',
@@ -105,7 +103,7 @@ export function App() {
     )   
   } else{
     return (
-      <SignUpPage setAppAccessToken={setAccessToken}></SignUpPage>
+      <SignUpPage setAppAccessToken={setAccessToken} setLoginStatus = {setLogin}></SignUpPage>
     )
   }
 }

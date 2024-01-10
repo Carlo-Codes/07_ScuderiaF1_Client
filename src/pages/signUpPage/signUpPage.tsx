@@ -4,14 +4,18 @@ import './signUpPage.css'
 import { TextInput } from "../../Util/input/input";
 import {authenticationRequest, newUserRequest} from '@backend/HTTPtypes'
 import { login } from "../../apis/auth";
+import CognitoIdentityServiceProvider, {InitiateAuthResponse} from 'aws-sdk/clients/cognitoidentityserviceprovider'
 
-export function SignUpPage(props:{setAppAccessToken:React.Dispatch<React.SetStateAction<string|undefined>>}){
+
+
+export function SignUpPage(props:{setAppAccessToken:React.Dispatch<React.SetStateAction<string|undefined>>, setLoginStatus:React.Dispatch<React.SetStateAction<boolean>>}){
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [retypePassword, setRetypePassword] = useState('')
 
     const [loginState, setloginState] = useState(true)
+    const [requestStatus, setRequestStatus] = useState('')
 
     const switchLoginState = () => {
         setloginState(!loginState)
@@ -23,9 +27,20 @@ export function SignUpPage(props:{setAppAccessToken:React.Dispatch<React.SetStat
     }
 
 
+
     const initLogin =  async () => {
-        const res = await login(credentials)
-        props.setAppAccessToken(res.AuthenticationResult?.AccessToken)
+        try{
+            const res = await login(credentials)
+            if(!res.AuthenticationResult){
+                console.log('fuck')
+            }
+            props.setAppAccessToken(res.AuthenticationResult?.AccessToken)
+            props.setLoginStatus(true)
+        }catch(err:unknown){
+            if(err instanceof Error){
+                
+            }
+        }
     }
 
 
