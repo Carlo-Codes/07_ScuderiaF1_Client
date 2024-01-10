@@ -3,7 +3,7 @@ import { Card } from "../../Util/card/card";
 import './signUpPage.css'
 import { TextInput } from "../../Util/input/input";
 import {authenticationRequest, newUserRequest} from '@backend/HTTPtypes'
-import { login } from "../../apis/auth";
+import { login, signUp } from "../../apis/auth";
 import CognitoIdentityServiceProvider, {InitiateAuthResponse} from 'aws-sdk/clients/cognitoidentityserviceprovider'
 
 
@@ -13,15 +13,24 @@ export function SignUpPage(props:{setAppAccessToken:React.Dispatch<React.SetStat
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [retypePassword, setRetypePassword] = useState('')
+    const [verificationCode, setVerificationCode] = useState('')
 
-    const [loginState, setloginState] = useState(true)
+    const [loginState, setloginState] = useState(1)
     const [requestStatus, setRequestStatus] = useState('')
 
-    const switchLoginState = () => {
-        setloginState(!loginState)
+    enum LOGIN_STATE {
+        login,
+        signUp,
+        verifyEmail
+
     }
 
-    const credentials:newUserRequest | authenticationRequest ={
+    const changeStateHanler = (e:React.MouseEvent<HTMLButtonElement>) => {
+        setloginState(Number(e.currentTarget.id))
+    }
+
+    const credentials:newUserRequest | authenticationRequest = 
+    {
         email:username,
         password:password
     }
@@ -31,15 +40,42 @@ export function SignUpPage(props:{setAppAccessToken:React.Dispatch<React.SetStat
     const initLogin =  async () => {
         try{
             const res = await login(credentials)
-            if(!res.AuthenticationResult){
-                console.log('fuck')
+            if(typeof res == 'string'){
+                setRequestStatus(res)
+                return
             }
+
             props.setAppAccessToken(res.AuthenticationResult?.AccessToken)
             props.setLoginStatus(true)
+        }
+        catch(err:unknown){
+            if(err instanceof Error){
+                setRequestStatus(err.message)
+            }
+        }
+    }
+
+    const initSignUp = async () => {
+        try{
+            const res = await signUp(credentials as newUserRequest)
+            if(typeof res == 'string'){
+                setRequestStatus(res)
+                return
+            }
+            setloginState(LOGIN_STATE.verifyEmail)
+            setRequestStatus('Please verify your email address, check your inbox')
         }catch(err:unknown){
             if(err instanceof Error){
-                
+                setRequestStatus(err.message)
             }
+        }
+    }
+
+    const initVerify = async () => {
+        try {
+            
+        } catch (error) {
+            
         }
     }
 
@@ -50,8 +86,8 @@ export function SignUpPage(props:{setAppAccessToken:React.Dispatch<React.SetStat
         <>
             <Card>
                 <div className="interactionInternals">
-                    <TextInput inputName="Username" changeHandler={setUsername}></TextInput>
-                    <TextInput inputName="Password" changeHandler={setPassword}></TextInput>
+                    <TextInput inputName="Username" changeHandler={setUsername} inputType='email'></TextInput>
+                    <TextInput inputName="Password" changeHandler={setPassword} inputType='password'></TextInput>
                     <button onClick={initLogin}>Login</button>
                 </div>
             </Card>
@@ -59,38 +95,67 @@ export function SignUpPage(props:{setAppAccessToken:React.Dispatch<React.SetStat
             <Card>
                 <div className="stateChanger">
                     <div className="stateChangerTitle">Not registered?</div>
-                    <button onClick={switchLoginState}>Sign Up</button>
+                    <button id={LOGIN_STATE.signUp.toString()} onClick={changeStateHanler}>Sign Up</button>
                 </div>
             </Card>
         </>
-        
+    
 
     const signUpCard = 
         <>
             <Card>
                 <div className="interactionInternals">
-                    <TextInput inputName="Username" changeHandler={setUsername}></TextInput>
-                    <TextInput inputName="Password" changeHandler={setPassword}></TextInput>
-                    <TextInput inputName="Retype Password" changeHandler={setRetypePassword}></TextInput>
-                    <button>Sign Up</button>
+                    <TextInput inputName="Username" changeHandler={setUsername} inputType='email'></TextInput>
+                    <TextInput inputName="Password" changeHandler={setPassword} inputType='password' ></TextInput>
+                    <TextInput inputName="Retype Password" changeHandler={setRetypePassword} inputType='password'></TextInput>
+                    <button onClick={initSignUp}>Sign Up</button>
                 </div>
             </Card>
 
             <Card>
                 <div className="stateChanger">
                     <div className="stateChangerTitle">Already registered?</div>
-                    <button onClick={switchLoginState}>Log In</button>
+                    <button id={LOGIN_STATE.login.toString()} onClick={changeStateHanler}>Log In</button>
+                    <div className="stateChangerTitle">Need to Verify Your Email?</div>
+                    <button id={LOGIN_STATE.verifyEmail.toString()} onClick={changeStateHanler}>Verify</button>
+                </div>
+
+                
+            </Card>
+        </>
+    
+    const verifyEmailCard = 
+        <>
+            <Card>
+                <div className="interactionInternals">
+                    <TextInput inputName="Username" changeHandler={setUsername} inputType='email'></TextInput>
+                    <TextInput inputName="Varification Code" changeHandler={setVerificationCode} inputType='text' ></TextInput>
+                    <button onClick={initVerify}>Verify</button>
+                </div>
+            </Card>
+
+            <Card>
+                <div className="stateChanger">
+                    <div className="stateChangerTitle">Already Verified?</div>
+                    <button id={LOGIN_STATE.login.toString()} onClick={changeStateHanler}>Log In</button>
                 </div>
             </Card>
         </>
 
+
     const stateRenderer = ()=>{
-        if(loginState){
+        if(loginState == LOGIN_STATE.login){
             return loginCard
-        }else {
+        }
+        if(loginState == LOGIN_STATE.signUp){
             return signUpCard
-        }       
+        }
+        if(loginState == LOGIN_STATE.verifyEmail){
+            return verifyEmailCard
+        }
     }
+
+
     return(
         <div className="signUpPage">
             <div className="signUpHeader">
@@ -98,6 +163,7 @@ export function SignUpPage(props:{setAppAccessToken:React.Dispatch<React.SetStat
             </div>
             <div className="signUpBody">
                 {stateRenderer()}
+                <div className="requestStatus">{requestStatus}</div>
             </div>
             <div className="signUpFooter">
                 by Carlo
