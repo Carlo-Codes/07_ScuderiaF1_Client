@@ -14,6 +14,7 @@ import { LeaguePage } from './pages/LeaguePage/leaguePage';
 import {NavBar} from './Util/UI/navBar/navBar'
 import {dataResponse} from '@backend/HTTPtypes'
 import {login} from './apis/auth'
+import { getData } from './apis/get';
 
 const driver:apiSportsDriver = {
   id: 1,
@@ -44,15 +45,38 @@ export interface navItemInterface{
 
 export function App() {
   const [LogInState, setLogin] = useState(false)
-  const [state, setState] = useState('Leagues')
+  const [state, setState] = useState('Home')
   const [userData, setUserData] = useState<dataResponse>()
   const [accessToken, setAccessToken] = useState<string>()
+  const [errorState, setErrorState] = useState<string>()
 
   const stateChanger = (state:string)=>{
     setState(state)
   }
 
+  function initAccessToken(token:string, callback:()=>void){
+    setAccessToken(token)
+    callback()
+  }
 
+  const initGetData = async () => {
+    try {
+      if(accessToken){
+        const res = await getData(accessToken)
+        if(typeof res == 'string'){
+          setErrorState(res)
+          return
+        }
+        setUserData(res)
+      }
+    } catch (err:unknown) {
+        if(err instanceof Error){
+          setErrorState(err.message)
+      }
+    }
+
+    
+  }
 
   enum States {
     Login = 'Login',
@@ -103,7 +127,7 @@ export function App() {
     )   
   } else{
     return (
-      <SignUpPage setAppAccessToken={setAccessToken} setLoginStatus = {setLogin}></SignUpPage>
+      <SignUpPage setAppAccessToken={initAccessToken} setLoginStatus = {setLogin} getInitialData={initGetData}></SignUpPage>
     )
   }
 }

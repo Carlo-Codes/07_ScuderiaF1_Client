@@ -3,49 +3,41 @@ import { Card } from "../../Util/card/card";
 import './signUpPage.css'
 import { TextInput } from "../../Util/input/input";
 import {authenticationRequest, newUserRequest} from '@backend/HTTPtypes'
-import { login, signUp } from "../../apis/auth";
+import { login, signUp, confirmUser } from "../../apis/auth";
 import CognitoIdentityServiceProvider, {InitiateAuthResponse} from 'aws-sdk/clients/cognitoidentityserviceprovider'
 
 
 
-export function SignUpPage(props:{setAppAccessToken:React.Dispatch<React.SetStateAction<string|undefined>>, setLoginStatus:React.Dispatch<React.SetStateAction<boolean>>}){
+export function SignUpPage(props:{setAppAccessToken:(token:string|undefined, callback:()=>void)=>void, setLoginStatus:React.Dispatch<React.SetStateAction<boolean>>, getInitialData:React.Dispatch<React.SetStateAction<void>>}){
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [retypePassword, setRetypePassword] = useState('')
     const [verificationCode, setVerificationCode] = useState('')
 
-    const [loginState, setloginState] = useState(1)
+    const [loginState, setloginState] = useState(0)
     const [requestStatus, setRequestStatus] = useState('')
 
     enum LOGIN_STATE {
         login,
         signUp,
         verifyEmail
-
     }
 
     const changeStateHanler = (e:React.MouseEvent<HTMLButtonElement>) => {
         setloginState(Number(e.currentTarget.id))
     }
 
-    const credentials:newUserRequest | authenticationRequest = 
-    {
-        email:username,
-        password:password
-    }
-
-
-
     const initLogin =  async () => {
         try{
-            const res = await login(credentials)
+            const res = await login({email:username, password:password} as newUserRequest)
             if(typeof res == 'string'){
                 setRequestStatus(res)
                 return
             }
 
-            props.setAppAccessToken(res.AuthenticationResult?.AccessToken)
+            props.setAppAccessToken(res.AuthenticationResult?.AccessToken, props.getInitialData)
+            
             props.setLoginStatus(true)
         }
         catch(err:unknown){
@@ -57,7 +49,10 @@ export function SignUpPage(props:{setAppAccessToken:React.Dispatch<React.SetStat
 
     const initSignUp = async () => {
         try{
-            const res = await signUp(credentials as newUserRequest)
+            if(password != retypePassword){
+                throw new Error("Passwords are not the same")
+            }
+            const res = await signUp({email:username, password:password} as newUserRequest)
             if(typeof res == 'string'){
                 setRequestStatus(res)
                 return
@@ -73,7 +68,13 @@ export function SignUpPage(props:{setAppAccessToken:React.Dispatch<React.SetStat
 
     const initVerify = async () => {
         try {
-            
+            const res = await confirmUser({email:username,code:verificationCode})
+            if(typeof res == 'string'){
+                setRequestStatus(res)
+                return
+            }
+            setloginState(LOGIN_STATE.login)
+            setRequestStatus('User Verified, Please Log in!')
         } catch (error) {
             
         }
@@ -129,7 +130,7 @@ export function SignUpPage(props:{setAppAccessToken:React.Dispatch<React.SetStat
             <Card>
                 <div className="interactionInternals">
                     <TextInput inputName="Username" changeHandler={setUsername} inputType='email'></TextInput>
-                    <TextInput inputName="Varification Code" changeHandler={setVerificationCode} inputType='text' ></TextInput>
+                    <TextInput inputName="Varification Code" changeHandler={setVerificationCode} inputType='text'></TextInput>
                     <button onClick={initVerify}>Verify</button>
                 </div>
             </Card>
