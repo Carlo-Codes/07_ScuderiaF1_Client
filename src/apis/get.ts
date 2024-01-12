@@ -1,12 +1,11 @@
 import {dataResponse} from '@backend/HTTPtypes'
 
 export async function getData(accessToken:string):Promise<dataResponse|string>{
-    const res = await fetch('http://localhost:7000/api/authPassword', {
-       method : 'POST',
-       mode : 'cors',
+    const res = await fetch('http://localhost:7000/api/getData', {
+       method : 'GET',
        headers : {
         "Content-Type": "application/json",
-        "authorization": `Bearer ${accessToken}`
+        "authorization": `Bearer${accessToken}`
        },
        
     })

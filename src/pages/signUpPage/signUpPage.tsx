@@ -8,7 +8,7 @@ import CognitoIdentityServiceProvider, {InitiateAuthResponse} from 'aws-sdk/clie
 
 
 
-export function SignUpPage(props:{setAppAccessToken:(token:string|undefined, callback:()=>void)=>void, setLoginStatus:React.Dispatch<React.SetStateAction<boolean>>, getInitialData:React.Dispatch<React.SetStateAction<void>>}){
+export function SignUpPage(props:{setAppAccessToken:(token:string|undefined)=>void, setLoginStatus:React.Dispatch<React.SetStateAction<boolean>>, getInitialData:React.Dispatch<React.SetStateAction<void>>}){
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -35,10 +35,8 @@ export function SignUpPage(props:{setAppAccessToken:(token:string|undefined, cal
                 setRequestStatus(res)
                 return
             }
-
-            props.setAppAccessToken(res.AuthenticationResult?.AccessToken, props.getInitialData)
-            
-            props.setLoginStatus(true)
+            props.setAppAccessToken(res.AuthenticationResult?.AccessToken);
+            props.setLoginStatus(true);
         }
         catch(err:unknown){
             if(err instanceof Error){

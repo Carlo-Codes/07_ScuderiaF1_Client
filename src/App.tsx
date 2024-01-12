@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -50,13 +50,17 @@ export function App() {
   const [accessToken, setAccessToken] = useState<string>()
   const [errorState, setErrorState] = useState<string>()
 
+  useEffect(()=>{
+    initGetData(); 
+
+  },[accessToken])
+
   const stateChanger = (state:string)=>{
     setState(state)
   }
 
-  function initAccessToken(token:string, callback:()=>void){
+  function initAccessToken(token:string){
     setAccessToken(token)
-    callback()
   }
 
   const initGetData = async () => {
