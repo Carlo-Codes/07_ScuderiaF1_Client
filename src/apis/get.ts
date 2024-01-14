@@ -1,7 +1,7 @@
 import {dataResponse} from '@backend/HTTPtypes'
 
 export async function getData(accessToken:string):Promise<dataResponse|string>{
-    const res = await fetch('http://localhost:7000/api/getData', {
+    const res = await fetch('http://localhost:7000/api/user/getData', {
        method : 'GET',
        headers : {
         "Content-Type": "application/json",

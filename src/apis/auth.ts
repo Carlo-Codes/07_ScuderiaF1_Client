@@ -6,7 +6,7 @@ import { SignUpCommandOutput,} from '@aws-sdk/client-cognito-identity-provider/d
 
 
 export const login = async (creds:authenticationRequest):Promise<InitiateAuthResponse | string> => { //need to ask about error types aws
-    const res = await fetch('http://localhost:7000/api/authPassword', {
+    const res = await fetch('http://localhost:7000/api/newUser/authPassword', {
        method : 'POST',
        mode : 'cors',
        headers : {
@@ -24,7 +24,7 @@ export const login = async (creds:authenticationRequest):Promise<InitiateAuthRes
 
 
 export const signUp = async (creds:newUserRequest): Promise<SignUpCommandOutput | string> => {
-    const res = await fetch('http://localhost:7000/api/newUser', {
+    const res = await fetch('http://localhost:7000/api/newUser/newUser', {
        method : 'POST',
        mode : 'cors',
        headers : {
@@ -42,7 +42,7 @@ export const signUp = async (creds:newUserRequest): Promise<SignUpCommandOutput 
 
 
 export const confirmUser = async (creds:confirmUserRequest): Promise <confirmUserRequest | string> => {
-    const res = await fetch('http://localhost:7000/api/confirmUser', {
+    const res = await fetch('http://localhost:7000/api/newUser/confirmUser', {
         method : 'POST',
         mode : 'cors',
         headers : {
