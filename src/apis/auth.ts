@@ -57,3 +57,7 @@ export const confirmUser = async (creds:confirmUserRequest): Promise <confirmUse
      }
      return res.json()
 }
+
+export const refreshToken = async (token:string){
+    void
+}

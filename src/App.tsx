@@ -3,8 +3,6 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import {SignUpPage} from './pages/signUpPage/signUpPage'
-import {DriverCard} from './driverCard/driverCard'
-import {DriverSelectionCard} from './driverCard/driverSelectionCard'
 import {apiSportsDriver} from '@backend/apiSportsResponseTypes'
 import { TeamCreationPage } from './pages/teamPages/teamCreationPage';
 import { LeagueRankingPage } from './pages/leagueRankingPage/leagueRankingPage';
@@ -13,8 +11,9 @@ import { TeamPointPage } from './pages/teamPages/teamPointsPage';
 import { LeaguePage } from './pages/LeaguePage/leaguePage';
 import {NavBar} from './Util/UI/navBar/navBar'
 import {dataResponse} from '@backend/HTTPtypes'
-import {login} from './apis/auth'
+import {login, refreshToken} from './apis/auth'
 import { getData } from './apis/get';
+import { AuthenticationResultType,  } from '@aws-sdk/client-cognito-identity-provider'
 
 const driver:apiSportsDriver = {
   id: 1,
@@ -47,26 +46,41 @@ export function App() {
   const [LogInState, setLogin] = useState(false)
   const [state, setState] = useState('Home')
   const [userData, setUserData] = useState<dataResponse>()
-  const [accessToken, setAccessToken] = useState<string>()
+  const [authenticationResult, setauthenticationResult] = useState<AuthenticationResultType>()
   const [errorState, setErrorState] = useState<string>()
 
-  useEffect(()=>{
+  useEffect(()=>{ //download user data from sever when page loads
     initGetData(); 
+  },[authenticationResult])
 
-  },[accessToken])
+  useEffect(() => {
+    if (!authenticationResult){
+      const auth = localStorage.getItem('authentication') as AuthenticationResultType
+      const loginDate = Number(localStorage.getItem('loginDate'))
+      if (auth && loginDate){
+        if(loginDate + auth.ExpiresIn! > Date.now()){
+          setauthenticationResult(auth)
+          return
+        }else{
+
+        }
+      }
+  
+    }
+  })
 
   const stateChanger = (state:string)=>{
     setState(state)
   }
 
-  function initAccessToken(token:string){
-    setAccessToken(token)
+  function initAccessToken(auth:AuthenticationResultType | undefined){
+    setauthenticationResult(auth)
   }
 
   const initGetData = async () => {
     try {
-      if(accessToken){
-        const res = await getData(accessToken)
+      if(authenticationResult?.AccessToken){
+        const res = await getData(authenticationResult.AccessToken)
         if(typeof res == 'string'){
           setErrorState(res)
           return
@@ -81,6 +95,15 @@ export function App() {
 
     
   }
+
+  const initRefreshToken = async () => {
+    try {
+      
+    } catch (error) {
+      
+    }
+  }
+ 
 
   enum States {
     Login = 'Login',

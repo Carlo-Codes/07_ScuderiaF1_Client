@@ -4,11 +4,12 @@ import './signUpPage.css'
 import { TextInput } from "../../Util/input/input";
 import {authenticationRequest, newUserRequest} from '@backend/HTTPtypes'
 import { login, signUp, confirmUser } from "../../apis/auth";
+import { AuthenticationResultType,  } from '@aws-sdk/client-cognito-identity-provider'
 import CognitoIdentityServiceProvider, {InitiateAuthResponse} from 'aws-sdk/clients/cognitoidentityserviceprovider'
 
 
 
-export function SignUpPage(props:{setAppAccessToken:(token:string|undefined)=>void, setLoginStatus:React.Dispatch<React.SetStateAction<boolean>>, getInitialData:React.Dispatch<React.SetStateAction<void>>}){
+export function SignUpPage(props:{setAppAccessToken:(token:AuthenticationResultType | undefined)=>void, setLoginStatus:React.Dispatch<React.SetStateAction<boolean>>, getInitialData:React.Dispatch<React.SetStateAction<void>>}){
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -35,7 +36,9 @@ export function SignUpPage(props:{setAppAccessToken:(token:string|undefined)=>vo
                 setRequestStatus(res)
                 return
             }
-            props.setAppAccessToken(res.AuthenticationResult?.AccessToken);
+            localStorage.setItem('authentication', JSON.stringify(res.AuthenticationResult))
+            localStorage.setItem('loginDate', Date.now().toString())
+            props.setAppAccessToken(res.AuthenticationResult);
             props.setLoginStatus(true);
         }
         catch(err:unknown){
