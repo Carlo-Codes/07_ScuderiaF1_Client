@@ -1,5 +1,5 @@
 import {authenticationRequest, newUserRequest, confirmUserRequest} from '@backend/HTTPtypes'
-import {InitiateAuthResponse, ConfirmSignUpResponse} from 'aws-sdk/clients/cognitoidentityserviceprovider'
+import {InitiateAuthResponse, ConfirmSignUpResponse, AuthenticationResultType} from 'aws-sdk/clients/cognitoidentityserviceprovider'
 import { SignUpCommandOutput,} from '@aws-sdk/client-cognito-identity-provider/dist-types/commands/SignUpCommand';
 
 
@@ -58,6 +58,21 @@ export const confirmUser = async (creds:confirmUserRequest): Promise <confirmUse
      return res.json()
 }
 
-export const refreshToken = async (token:string){
-    void
+export const refreshToken = async (token:string) : Promise< AuthenticationResultType | string>  => {
+    const res  = await fetch('http://localhost:7000/api/newUser/refreshToken', {
+        method : 'GET',
+        mode : 'cors',
+        headers : {
+            "Content-Type": "application/json",
+            "authorization": `Bearer${token}`
+           },
+
+    }
+    )
+
+    if(res.status == 400){
+        return res.text()
+    }
+    return res.json()
+
 }

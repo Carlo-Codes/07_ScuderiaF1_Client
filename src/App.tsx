@@ -54,21 +54,19 @@ export function App() {
   },[authenticationResult])
 
   useEffect(() => {
+    loginWithStorageData()
+  }, []);
+
+  const loginWithStorageData = () => {
     if (!authenticationResult){
-      const auth = localStorage.getItem('authentication') as AuthenticationResultType
+      const auth = localStorage.getItem('authentication')
       const loginDate = Number(localStorage.getItem('loginDate'))
       if (auth && loginDate){
-        if(loginDate + auth.ExpiresIn! > Date.now()){
-          setauthenticationResult(auth)
-          return
-        }else{
-
-        }
+        const parsed_auth = JSON.parse(auth) as AuthenticationResultType
+        setauthenticationResult(parsed_auth)
       }
-  
     }
-  })
-
+  }
   const stateChanger = (state:string)=>{
     setState(state)
   }
@@ -86,9 +84,12 @@ export function App() {
           return
         }
         setUserData(res)
+        setLogin(true)
       }
     } catch (err:unknown) {
         if(err instanceof Error){
+          setLogin(false)
+          initRefreshToken()
           setErrorState(err.message)
       }
     }
@@ -98,9 +99,23 @@ export function App() {
 
   const initRefreshToken = async () => {
     try {
-      
-    } catch (error) {
-      
+      if(authenticationResult?.RefreshToken){
+        const res = await refreshToken(authenticationResult.RefreshToken)
+        if(typeof res == 'string'){
+          setErrorState(res)
+          return
+        }
+        setauthenticationResult(res)
+      }
+    } catch (err:unknown) {
+        if(err instanceof Error){
+          console.log(err)
+          setauthenticationResult(undefined);
+          setLogin(false);
+          localStorage.removeItem('authentication')
+          localStorage.removeItem('loginDate')
+          setErrorState(err.message)
+        }
     }
   }
  

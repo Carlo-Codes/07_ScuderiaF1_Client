@@ -131,7 +131,7 @@ export function SignUpPage(props:{setAppAccessToken:(token:AuthenticationResultT
             <Card>
                 <div className="interactionInternals">
                     <TextInput inputName="Username" changeHandler={setUsername} inputType='email'></TextInput>
-                    <TextInput inputName="Varification Code" changeHandler={setVerificationCode} inputType='text'></TextInput>
+                    <TextInput inputName="Varification Code" changeHandler={setVerificationCode} inputType='text' ></TextInput>
                     <button onClick={initVerify}>Verify</button>
                 </div>
             </Card>
