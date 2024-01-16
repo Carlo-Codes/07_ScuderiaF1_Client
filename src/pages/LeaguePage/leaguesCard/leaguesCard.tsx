@@ -1,12 +1,13 @@
 import {Card} from '../../../Util/card/card'
 import {League} from '@backend/dbTypes'
 import './leaguesCard.css'
+import { dataResponse } from '@backend/HTTPtypes';
 
-export function LeaguesCard(props:{leagues:League[]}){
+export function LeaguesCard(props:{userData:dataResponse}){
 
-    const leagueDivs = props.leagues.map((league)=>{
+    const leagueDivs = props.userData.participatingLeague.map((league)=>{
         return (
-            <li className='leagueName'>
+            <li key={league.id} className='leagueName'>
                 {league.league_name}
             </li>
         )

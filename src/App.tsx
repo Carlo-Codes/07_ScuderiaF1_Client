@@ -15,28 +15,6 @@ import {login, refreshToken} from './apis/auth'
 import { getData } from './apis/get';
 import { AuthenticationResultType,  } from '@aws-sdk/client-cognito-identity-provider'
 
-const driver:apiSportsDriver = {
-  id: 1,
-  name: 'Max Verstappen',
-  abbr: 'ves',
-  number: 1,
-  image: "test image"
-}
-const driver2:apiSportsDriver = {
-  id: 1,
-  name: 'Charles Leclerc',
-  abbr: 'ves',
-  number: 1,
-  image: "test image"
-}
-
-const testLeague:League={
-  id:1,
-  owner_user_id:3,
-  league_name:"testLeague",
-  inviteCode:"hgfdsa"
-}
-
 export interface navItemInterface{
   name:string,
   stateChanger:(state: string) => void
@@ -149,7 +127,9 @@ export function App() {
 
   }
   if(state == States.Leagues){
-    page = <LeaguePage></LeaguePage>
+    if(userData && authenticationResult){
+      page = <LeaguePage userData={userData} authentication ={authenticationResult}></LeaguePage>
+    }
   }
   if(state == States.Account){
 

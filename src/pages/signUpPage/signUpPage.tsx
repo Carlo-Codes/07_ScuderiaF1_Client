@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Card } from "../../Util/card/card";
 import './signUpPage.css'
-import { TextInput } from "../../Util/input/input";
+import { CustomTextInput } from "../../Util/input/input";
 import {authenticationRequest, newUserRequest} from '@backend/HTTPtypes'
 import { login, signUp, confirmUser } from "../../apis/auth";
 import { AuthenticationResultType,  } from '@aws-sdk/client-cognito-identity-provider'
@@ -88,8 +88,8 @@ export function SignUpPage(props:{setAppAccessToken:(token:AuthenticationResultT
         <>
             <Card>
                 <div className="interactionInternals">
-                    <TextInput inputName="Username" changeHandler={setUsername} inputType='email'></TextInput>
-                    <TextInput inputName="Password" changeHandler={setPassword} inputType='password'></TextInput>
+                    <CustomTextInput inputName="Username" changeHandler={setUsername} inputType='email'></CustomTextInput>
+                    <CustomTextInput inputName="Password" changeHandler={setPassword} inputType='password'></CustomTextInput>
                     <button onClick={initLogin}>Login</button>
                 </div>
             </Card>
@@ -107,9 +107,9 @@ export function SignUpPage(props:{setAppAccessToken:(token:AuthenticationResultT
         <>
             <Card>
                 <div className="interactionInternals">
-                    <TextInput inputName="Username" changeHandler={setUsername} inputType='email'></TextInput>
-                    <TextInput inputName="Password" changeHandler={setPassword} inputType='password' ></TextInput>
-                    <TextInput inputName="Retype Password" changeHandler={setRetypePassword} inputType='password'></TextInput>
+                    <CustomTextInput inputName="Username" changeHandler={setUsername} inputType='email'></CustomTextInput>
+                    <CustomTextInput inputName="Password" changeHandler={setPassword} inputType='password' ></CustomTextInput>
+                    <CustomTextInput inputName="Retype Password" changeHandler={setRetypePassword} inputType='password'></CustomTextInput>
                     <button onClick={initSignUp}>Sign Up</button>
                 </div>
             </Card>
@@ -130,8 +130,8 @@ export function SignUpPage(props:{setAppAccessToken:(token:AuthenticationResultT
         <>
             <Card>
                 <div className="interactionInternals">
-                    <TextInput inputName="Username" changeHandler={setUsername} inputType='email'></TextInput>
-                    <TextInput inputName="Varification Code" changeHandler={setVerificationCode} inputType='text' ></TextInput>
+                    <CustomTextInput inputName="Username" changeHandler={setUsername} inputType='email'></CustomTextInput>
+                    <CustomTextInput inputName="Varification Code" changeHandler={setVerificationCode} inputType='text' ></CustomTextInput>
                     <button onClick={initVerify}>Verify</button>
                 </div>
             </Card>

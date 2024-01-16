@@ -4,27 +4,16 @@ import { CreateLeagueCard } from "./leaguesCard/createLeagueCard";
 import { MyLeaguesCard } from "./leaguesCard/myleaguesCard";
 import { LeaguesCard } from "./leaguesCard/leaguesCard"; 
 import './leaguePage.css'
+import { dataResponse } from "@backend/HTTPtypes";
+import { AuthenticationResultType } from "@aws-sdk/client-cognito-identity-provider";
 
-const league1 : League = {
-    id:1,
-    owner_user_id:1,
-    league_name: "testleague 1",
-    inviteCode: "htgrfedw"
-}
 
-const league2 : League = {
-    id:2,
-    owner_user_id:3,
-    league_name: "testleague 2",
-    inviteCode: "htgrfedw"
-}
-
-export function LeaguePage(){
+export function LeaguePage(props:{userData:dataResponse, authentication:AuthenticationResultType}){
     return (
         <div className="leaguePage">
-            <LeaguesCard leagues={[league1,league2]}></LeaguesCard>
-            <MyLeaguesCard leagues={[league1]}></MyLeaguesCard>
-            <CreateLeagueCard></CreateLeagueCard>
+            <LeaguesCard userData={props.userData}></LeaguesCard>
+            <MyLeaguesCard userData={props.userData}></MyLeaguesCard>
+            <CreateLeagueCard userData={props.userData} authentication = {props.authentication}></CreateLeagueCard>
         </div>
     )
 }
