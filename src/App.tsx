@@ -103,7 +103,7 @@ export function App() {
     Home = 'Home',
     Leagues = 'Leagues',
     Account = 'Account',
-    Teams = 'Teams',
+    Team = 'Team',
   }
  
   const navItems:navItemInterface[] = [
@@ -117,6 +117,10 @@ export function App() {
     },
     {
       name:States.Account,
+      stateChanger:stateChanger
+    },
+    {
+      name:States.Team,
       stateChanger:stateChanger
     }
   ]
@@ -134,7 +138,7 @@ export function App() {
   if(state == States.Account){
 
   }
-  if(state == States.Teams){
+  if(state == States.Team){
     page = <TeamPointPage></TeamPointPage>
   }
 
