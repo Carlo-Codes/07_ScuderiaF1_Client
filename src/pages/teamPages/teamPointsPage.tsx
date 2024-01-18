@@ -4,8 +4,9 @@ import { DriverPointsCard } from "./driverCard/driverPointsCard";
 import {TrackCard} from "../teamPages/trackCard/trackCard"
 import { Card } from "../../Util/card/card";
 import {TeamPageBase} from './teamPageBase'
+import { dataResponse } from "@backend/HTTPtypes";
 
-export function TeamPointPage(){
+export function TeamPointPage(props:{userData:dataResponse}){
 
     const driver:apiSportsDriver = {
         id: 1,
@@ -40,7 +41,7 @@ export function TeamPointPage(){
     }
 
     return (
-        <TeamPageBase>
+        <TeamPageBase userData={props.userData}>
             <div className="teamCreationCardInternals">
                 {driverPointsCards}
                 <button>Ok</button>

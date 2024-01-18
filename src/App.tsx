@@ -139,7 +139,7 @@ export function App() {
 
   }
   if(state == States.Team){
-    page = <TeamPointPage></TeamPointPage>
+    page = <TeamPointPage userData={userData!}></TeamPointPage>
   }
 
 
