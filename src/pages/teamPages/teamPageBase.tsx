@@ -1,18 +1,46 @@
-import React, { FunctionComponent } from "react"
+import React, { FunctionComponent, useState } from "react"
 import {TrackCard} from './trackCard/trackCard'
 import { Card } from "../../Util/card/card"
 import { PropsWithChildren } from "react"
-import { dataResponse } from "@backend/HTTPtypes";
+import { dataResponse, } from "@backend/HTTPtypes";
+import { apiSportsRacesRes } from "@backend/apiSportsResponseTypes";
 import {DriverSelectionCard} from './driverCard/driverSelectionCard'
 import { DriverPointsCard } from "./driverCard/driverPointsCard";
 
 interface teamBasePageProps{
     userData:dataResponse
 }
-export const TeamPageBase:FunctionComponent<PropsWithChildren<teamBasePageProps>> = ({children, userData}) => {
+export function TeamPageBase(props:{userData:dataResponse}){
+
+    const [trackSelected, setTrackSelected] = useState<apiSportsRacesRes>()
+
+    function generateCurrentTrack(){
+        const date = Date.now() //change this for simulation
+        let potentialnextRace;
+        for(let i = 0; i < props.userData.raceData.length; i++){
+            const race = props.userData.raceData[i]
+            if(race.type == 'Race'){
+                const raceDate = new Date(race.date).getUTCDate()
+                if (raceDate > date){//if race is in th future
+                    if(!potentialnextRace){
+                        potentialnextRace = race;
+                    } else{
+                        const nextRaceDate = new Date(potentialnextRace.date).getUTCDate();
+                        const timeTocurrentNextRace = nextRaceDate - date;
+                        const timeToNewNextRace = raceDate - date;
+                        if(timeToNewNextRace < timeTocurrentNextRace){
+                            potentialnextRace = race;
+                        }
+                    }
+                }
+            }
+        }
+        setTrackSelected(potentialnextRace);
+    }
     
     function generateDrivePointsCards(){
-        //add points to team schema 
+
+        if()
     }
 
     function generateDriverSelectionCards(){
@@ -25,7 +53,7 @@ export const TeamPageBase:FunctionComponent<PropsWithChildren<teamBasePageProps>
             "Fastest Lap"      
             ]
 
-        const options = userData.driverData.map((driver, i) => 
+        const options = props.userData.driverData.map((driver, i) => 
         <option key={i} value={driver.driver.name}>{driver.driver.name}</option>
         )
 
@@ -39,7 +67,7 @@ export const TeamPageBase:FunctionComponent<PropsWithChildren<teamBasePageProps>
     }
     
     
-    const teams = userData.raceData.map((race) => {
+    const teams = props.userData.raceData.map((race) => {
         if(race.type == 'Race'){
             const raceDate = new Date(race.date).getUTCDate()
             if(raceDate < Date.now()){
@@ -63,7 +91,7 @@ export const TeamPageBase:FunctionComponent<PropsWithChildren<teamBasePageProps>
             <Card>
                 <>
                     <TrackCard trackName="Circuit de Spa-Francorchamps"></TrackCard>
-                    {children}
+                    {}
                 </>
             </Card>
         </div>
