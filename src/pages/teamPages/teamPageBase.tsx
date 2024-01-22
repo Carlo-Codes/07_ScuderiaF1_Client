@@ -23,9 +23,6 @@ export function TeamPageBase(props:{userData:dataResponse}){
     },[])
 
 
-
-
-
     interface selectionParam {
         dbSelection:keyof Team,
         dbPoints:keyof Team,
@@ -127,7 +124,6 @@ export function TeamPageBase(props:{userData:dataResponse}){
         }
 
 
-
     function findUserTeamForTrack(){
         const team = props.userData.userTeams.filter((team)=>{
             if(team.competion_id === trackSelected?.id){
@@ -192,12 +188,53 @@ export function TeamPageBase(props:{userData:dataResponse}){
         return driverSelectionCards
     }
     
+
+    function nextRaceHandler(){
+        let nextRace:apiSportsRacesRes|undefined = undefined
+        const currentRaceDate = new Date(trackSelected!.date).valueOf();
+        for (let i = 0; i < allRaces!.length; i++){
+            const tempRaceDate = new Date(allRaces![i].date).valueOf();
+            if(tempRaceDate>currentRaceDate){
+                if(!nextRace){
+                    nextRace = allRaces![i]
+                }else{
+                    const currentNextRaceDate = new Date(nextRace.date).valueOf();
+                    if (tempRaceDate<currentNextRaceDate){
+                        nextRace = allRaces![i]
+                    }
+                }
+            }
+        }
+        setTrackSelected(nextRace)
+    }
+
+    function previousRaceHandler(){
+        let nextRace:apiSportsRacesRes|undefined = undefined
+        const currentRaceDate = new Date(trackSelected!.date).valueOf();
+        for (let i = 0; i < allRaces!.length; i++){
+            const tempRaceDate = new Date(allRaces![i].date).valueOf();
+            if(tempRaceDate<currentRaceDate){
+                if(!nextRace){
+                    nextRace = allRaces![i]
+                }else{
+                    const currentNextRaceDate = new Date(nextRace.date).valueOf();
+                    if (tempRaceDate>currentNextRaceDate){
+                        nextRace = allRaces![i]
+                    }
+                }
+            }
+        }
+        setTrackSelected(nextRace)
+    }
+
+
+
     return (
         <div className="teamContainer">
             
             <Card>
                 <>
-                    <TrackCard trackName={trackSelected?.circuit.name!}></TrackCard>
+                    <TrackCard trackName={trackSelected?.circuit.name!} nextRaceHandler={nextRaceHandler} previousRaceHandler={previousRaceHandler} date={trackSelected?.date}></TrackCard>
                     {generateDriverCards()}
                 </>
             </Card>
