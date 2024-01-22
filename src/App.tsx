@@ -14,6 +14,7 @@ import {dataResponse} from '@backend/HTTPtypes'
 import {login, refreshToken} from './apis/auth'
 import { getData } from './apis/get';
 import { AuthenticationResultType,  } from '@aws-sdk/client-cognito-identity-provider'
+import { TeamPageBase } from './pages/teamPages/teamPageBase';
 
 export interface navItemInterface{
   name:string,
@@ -139,7 +140,7 @@ export function App() {
 
   }
   if(state == States.Team){
-    page = <TeamPointPage userData={userData!}></TeamPointPage>
+    page = <TeamPageBase userData={userData!}></TeamPageBase>
   }
 
 
