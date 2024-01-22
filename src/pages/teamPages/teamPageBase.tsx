@@ -165,6 +165,8 @@ export function TeamPageBase(props:{userData:dataResponse}){
                 )
             }
     
+        }else{
+            return <div className="noTeam">No Team Submmited</div>
         }
         return driverPointsCards
     }
@@ -189,7 +191,7 @@ export function TeamPageBase(props:{userData:dataResponse}){
     }
     
 
-    function nextRaceHandler(){
+    function nextRaceHandler(){ //would be better if i just sorted the array
         let nextRace:apiSportsRacesRes|undefined = undefined
         const currentRaceDate = new Date(trackSelected!.date).valueOf();
         for (let i = 0; i < allRaces!.length; i++){
@@ -208,7 +210,7 @@ export function TeamPageBase(props:{userData:dataResponse}){
         setTrackSelected(nextRace)
     }
 
-    function previousRaceHandler(){
+    function previousRaceHandler(){//would be better if i just sorted the array
         let nextRace:apiSportsRacesRes|undefined = undefined
         const currentRaceDate = new Date(trackSelected!.date).valueOf();
         for (let i = 0; i < allRaces!.length; i++){
