@@ -6,7 +6,7 @@ import { dataResponse, } from "@backend/HTTPtypes";
 import { apiSportsRacesRes } from "@backend/apiSportsResponseTypes";
 import {DriverSelectionCard} from './driverCard/driverSelectionCard'
 import { DriverPointsCard } from "./driverCard/driverPointsCard";
-import { RacesApiStore, Team } from "@backend/dbTypes";
+import { RacesApiStore, IdriverTiers, Team } from "@backend/dbTypes";
 
 
 export function TeamPageBase(props:{userData:dataResponse}){
@@ -172,9 +172,41 @@ export function TeamPageBase(props:{userData:dataResponse}){
     }
 
     function generateDriverSelectionCards(){
-        const options = props.userData.driverData.map((driver, i) =>  
+        const GeneralOptions = props.userData.driverData.map((driver, i) =>  
         <option key={i} value={driver.driver.name}>{driver.driver.name}</option>
         )
+
+        const driverTiers = props.userData.driverTiers
+        let tierKey : keyof typeof driverTiers;
+
+        const driverTierOptions: typeof driverTiers = {
+            
+            tier1:{
+                drivers: [] as JSX.Element[]
+            },
+            tier2:{
+                drivers: [] as JSX.Element[]
+            },
+            tier3:{
+                drivers: [] as JSX.Element[]
+            },
+        }
+
+        for(tierKey in driverTiers){ //here
+            const driverIds = driverTiers[tierKey].drivers as number[]
+            for(let i = 0; i < driverIds.length; i++){
+                const driverObj = props.userData.driverData.filter((driver)=>{
+                    return driver.driver.id = driverIds[i]
+                })[0]
+                driverTierOptions.tierKey.drivers.push(
+                    <option key={i} value={driverObj.driver.name}>{driverObj.driver.name}</option>
+                )
+            }
+        }
+        
+        console.log(driverTierOptions)
+
+        
 
         const driverSelectionCards:JSX.Element[] = []
         let paramKey : keyof SelectionParameters
@@ -182,7 +214,7 @@ export function TeamPageBase(props:{userData:dataResponse}){
             const parameter = SelectionParams[paramKey];
 
             driverSelectionCards.push(
-                <DriverSelectionCard selectionParam={parameter.clientName} driverOptions={options}/>
+                <DriverSelectionCard selectionParam={parameter.clientName} driverOptions={[<option></option>]}/>
             )   
             
         }
@@ -207,7 +239,9 @@ export function TeamPageBase(props:{userData:dataResponse}){
                 }
             }
         }
-        setTrackSelected(nextRace)
+        if(nextRace){
+            setTrackSelected(nextRace)
+        }
     }
 
     function previousRaceHandler(){//would be better if i just sorted the array
@@ -226,7 +260,9 @@ export function TeamPageBase(props:{userData:dataResponse}){
                 }
             }
         }
-        setTrackSelected(nextRace)
+        if(nextRace){
+            setTrackSelected(nextRace)
+        }
     }
 
 
