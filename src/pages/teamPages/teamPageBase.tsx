@@ -30,9 +30,9 @@ export function TeamPageBase(props:{userData:dataResponse}){
     }
 
     interface SelectionParameters {
-        t1:selectionParam,
-        t2:selectionParam,
-        t3:selectionParam,
+        tier1:selectionParam,
+        tier2:selectionParam,
+        tier3:selectionParam,
         dnf:selectionParam,
         fastestLap:selectionParam
 
@@ -40,21 +40,21 @@ export function TeamPageBase(props:{userData:dataResponse}){
 
     const SelectionParams:SelectionParameters = {  //somehow make this self updating if changes? maps names to db colums
        
-            t1:{
+            tier1:{
             dbSelection:"tier1_driver_id",
             dbPoints:"tier1_points",
             clientName: "Tier 1",
             }
         ,
         
-            t2:{
+            tier2:{
            dbSelection:"tier2_driver_id",
            dbPoints:"tier2_points",
            clientName: "Tier 2"
            }
         ,
         
-            t3:{
+            tier3:{
            dbSelection:"tier3_driver_id",
            dbPoints:"tier3_points",
            clientName: "Tier 3"
@@ -196,27 +196,30 @@ export function TeamPageBase(props:{userData:dataResponse}){
             const driverIds = driverTiers[tierKey].drivers as number[]
             for(let i = 0; i < driverIds.length; i++){
                 const driverObj = props.userData.driverData.filter((driver)=>{
-                    return driver.driver.id = driverIds[i]
+                    if(driver.driver.id === driverIds[i]){
+                        return driver
+                    }
                 })[0]
-                driverTierOptions.tierKey.drivers.push(
+                driverTierOptions[tierKey].drivers.push(
                     <option key={i} value={driverObj.driver.name}>{driverObj.driver.name}</option>
                 )
             }
         }
         
-        console.log(driverTierOptions)
-
         
-
         const driverSelectionCards:JSX.Element[] = []
         let paramKey : keyof SelectionParameters
         for(paramKey in SelectionParams){
             const parameter = SelectionParams[paramKey];
-
-            driverSelectionCards.push(
-                <DriverSelectionCard selectionParam={parameter.clientName} driverOptions={[<option></option>]}/>
-            )   
-            
+            if(paramKey === 'dnf'|| paramKey === 'fastestLap'){
+                driverSelectionCards.push(
+                    <DriverSelectionCard selectionParam={parameter.clientName} driverOptions={GeneralOptions}/>
+                )   
+            }else{
+                driverSelectionCards.push(
+                    <DriverSelectionCard selectionParam={parameter.clientName} driverOptions={driverTierOptions[paramKey].drivers}/>
+                )   
+            }       
         }
 
         return driverSelectionCards
