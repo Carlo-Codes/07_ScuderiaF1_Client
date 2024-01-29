@@ -1,6 +1,5 @@
 import {Team} from '@backend/dbTypes'
 export interface TeamFrontEnd extends Omit<Team,'id'|'user_id' >{
-    competion_id?:number
 }
 
 

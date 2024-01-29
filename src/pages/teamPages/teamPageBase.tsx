@@ -32,10 +32,15 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
 
     const [trackSelected, setTrackSelected] = useState<apiSportsRacesRes>()
     const [allRaces, setAllRaces] = useState<apiSportsRacesRes[]>();
+    const [savedTrackTeam, setSavedTrackTeam] = useState<Team>()
     const [trackTeam, setTrackTeam] = useState<TeamFrontEnd>()
     const [globalDate, setDate] = useState<number>(1687465115000) //change this for simulation
-   
     
+    function updateTrackTeam<K extends keyof TeamFrontEnd, V extends TeamFrontEnd[K]>(key:K, value: V):void{
+        let tempTeam = trackTeam || {} as TeamFrontEnd
+        tempTeam[key] = value
+        setTrackTeam(tempTeam)
+    }
     
     
     useEffect (()=>{
@@ -88,7 +93,7 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
 
     function initPage(){
         getRaces()
-        findUserTeamForTrack();
+        
     }
 
 
@@ -111,6 +116,8 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
 
         setAllRaces(allRacesStore)
         setTrackSelected(potentialnextRace)
+        updateTrackTeam('competition_id',potentialnextRace.id)
+        findUserTeamForTrack(potentialnextRace.id)
     }
 
 
@@ -131,14 +138,16 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
         }
 
 
-    function findUserTeamForTrack(){
+    function findUserTeamForTrack(competition_id:number){
         const team = props.userData.userTeams.filter((team)=>{
-            if(team.competion_id === trackSelected?.id){
+            if(team.competition_id === competition_id){
                 return team
             }
         })
-
-        setTrackTeam(team[0])
+        if(team[0]){
+            setSavedTrackTeam(team[0])
+        }
+        
     }
     
     function postNewTeamEventHandler(){
@@ -249,11 +258,11 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
             const parameter = SelectionParams[paramKey];
             if(paramKey === 'dnf'|| paramKey === 'fastestLap'){
                 driverSelectionCards.push(
-                    <DriverSelectionCard currentTeam = {trackTeam} selectionParam={parameter} driverOptions={GeneralOptions} teamChangehandler = {setTrackTeam}/>
+                    <DriverSelectionCard key={paramKey} currentTeam = {trackTeam} selectionParam={parameter} driverOptions={GeneralOptions} updateTeamHandler = {updateTrackTeam}/>
                 )   
             }else{
                 driverSelectionCards.push(
-                    <DriverSelectionCard  currentTeam = {trackTeam} selectionParam={parameter} driverOptions={driverTierOptions[paramKey].drivers} teamChangehandler = {setTrackTeam}/>
+                    <DriverSelectionCard key={paramKey} currentTeam = {trackTeam} selectionParam={parameter} driverOptions={driverTierOptions[paramKey].drivers} updateTeamHandler = {updateTrackTeam}/>
                 )   
             }       
         }
@@ -280,6 +289,7 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
         }
         if(nextRace){
             setTrackSelected(nextRace)
+            updateTrackTeam('competition_id',nextRace.id)
         }
     }
 
@@ -301,6 +311,7 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
         }
         if(nextRace){
             setTrackSelected(nextRace)
+            updateTrackTeam('competition_id',nextRace.id)
         }
     }
 
