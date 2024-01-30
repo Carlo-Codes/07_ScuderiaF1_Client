@@ -146,6 +146,8 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
         })
         if(team[0]){
             setSavedTrackTeam(team[0])
+        } else {
+            setSavedTrackTeam(undefined)
         }
         
     }
@@ -258,11 +260,11 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
             const parameter = SelectionParams[paramKey];
             if(paramKey === 'dnf'|| paramKey === 'fastestLap'){
                 driverSelectionCards.push(
-                    <DriverSelectionCard key={paramKey} currentTeam = {trackTeam} selectionParam={parameter} driverOptions={GeneralOptions} updateTeamHandler = {updateTrackTeam}/>
+                    <DriverSelectionCard key={paramKey} userData={props.userData} savedTeam = {savedTrackTeam} selectionParam={parameter} driverOptions={GeneralOptions} updateTeamHandler = {updateTrackTeam}/>
                 )   
             }else{
                 driverSelectionCards.push(
-                    <DriverSelectionCard key={paramKey} currentTeam = {trackTeam} selectionParam={parameter} driverOptions={driverTierOptions[paramKey].drivers} updateTeamHandler = {updateTrackTeam}/>
+                    <DriverSelectionCard key={paramKey} userData={props.userData} savedTeam = {savedTrackTeam} selectionParam={parameter} driverOptions={driverTierOptions[paramKey].drivers} updateTeamHandler = {updateTrackTeam}/>
                 )   
             }       
         }
@@ -290,6 +292,7 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
         if(nextRace){
             setTrackSelected(nextRace)
             updateTrackTeam('competition_id',nextRace.id)
+            findUserTeamForTrack(nextRace.id)
         }
     }
 
@@ -312,6 +315,7 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
         if(nextRace){
             setTrackSelected(nextRace)
             updateTrackTeam('competition_id',nextRace.id)
+            findUserTeamForTrack(nextRace.id)
         }
     }
 
