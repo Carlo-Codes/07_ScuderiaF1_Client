@@ -258,13 +258,22 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
         let paramKey : keyof SelectionParameters
         for(paramKey in SelectionParams){
             const parameter = SelectionParams[paramKey];
+            let driverID:number|undefined
+            
+            if(savedTrackTeam && savedTrackTeam[parameter.dbSelection]){
+                driverID = savedTrackTeam[parameter.dbSelection]
+            }
+
             if(paramKey === 'dnf'|| paramKey === 'fastestLap'){
+
+                
                 driverSelectionCards.push(
-                    <DriverSelectionCard key={paramKey} userData={props.userData} savedTeam = {savedTrackTeam} selectionParam={parameter} driverOptions={GeneralOptions} updateTeamHandler = {updateTrackTeam}/>
+                    
+                    <DriverSelectionCard key={driverID} userData={props.userData} savedTeam = {savedTrackTeam} selectionParam={parameter} driverOptions={GeneralOptions} updateTeamHandler = {updateTrackTeam}/>
                 )   
             }else{
                 driverSelectionCards.push(
-                    <DriverSelectionCard key={paramKey} userData={props.userData} savedTeam = {savedTrackTeam} selectionParam={parameter} driverOptions={driverTierOptions[paramKey].drivers} updateTeamHandler = {updateTrackTeam}/>
+                    <DriverSelectionCard key={driverID} userData={props.userData} savedTeam = {savedTrackTeam} selectionParam={parameter} driverOptions={driverTierOptions[paramKey].drivers} updateTeamHandler = {updateTrackTeam}/>
                 )   
             }       
         }

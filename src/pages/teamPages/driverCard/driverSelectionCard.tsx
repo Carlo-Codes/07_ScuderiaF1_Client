@@ -11,7 +11,14 @@ import { dataResponse } from "@backend/HTTPtypes";
 
 export function DriverSelectionCard(props:{userData:dataResponse, selectionParam:selectionParam, driverOptions:JSX.Element[], savedTeam:TeamFrontEnd|undefined, updateTeamHandler:<K extends keyof TeamFrontEnd, V extends TeamFrontEnd[K]>(key: K, value: V)=>void}){
 
-    const [selection, setSelection] = useState<string>(getDriverNamefromID())
+    let currentSelection = 'hidden'
+    if(props.savedTeam){
+        const savedTeamdriverId = props.savedTeam[props.selectionParam.dbSelection]
+        if(savedTeamdriverId){
+            currentSelection = getDriverNamefromID(savedTeamdriverId)
+        }
+    }
+    const [selection, setSelection] = useState<string>(currentSelection)
 
     const handleSelectionChange = (e:React.ChangeEvent<HTMLSelectElement>) => {
         const selectedI = e.target.options.selectedIndex
@@ -24,35 +31,34 @@ export function DriverSelectionCard(props:{userData:dataResponse, selectionParam
         setSelection(selectedName);
     }
     
-    function getDriverNamefromID():string{
+    function getDriverNamefromID(id:number):string{
         const hidden = 'hidden'
-        if(props.savedTeam){
-            const savedTeamDriverId = props.savedTeam![props.selectionParam.dbSelection]
-            if(props.savedTeam && savedTeamDriverId){
-                const driver = props.userData.driverData.filter((driver)=>{
-                    if(driver.driver.id == savedTeamDriverId){
-                        return driver
-                    }
-                })[0]
-                if(driver?.driver.name){
-                    return (driver.driver.name)
-                
-                }
+        const driver = props.userData.driverData.filter((driver)=>{
+            if(driver.driver.id == id){
+                return driver
             }
-    
+            })[0]
+        if(driver?.driver.name){
+            return (driver.driver.name)
+        
+        } else {
+            return hidden
         }
-        return hidden
+
     }
 
-    function defaultSeleciton(){
-        let defaultSel=''
-        if(props.savedTeam){
-            defaultSel = props.savedTeam![props.selectionParam.dbSelection] as unknown as string
+    function getIdFromName(){
+       const driver = props.userData.driverData.filter((driver)=>{
+        if (driver.driver.name === selection){
+            return driver
         }
-        if(!defaultSel){
-            defaultSel = "hidden"
-        }
-        return defaultSel
+       })[0]
+       if(driver){
+        return driver.driver.id as unknown as string
+       }else{
+        return selection
+       }
+       
     }
 
     const driverselection =
@@ -60,7 +66,7 @@ export function DriverSelectionCard(props:{userData:dataResponse, selectionParam
                 <div className="driverCard">
                     <div className="selectionParam">{props.selectionParam.clientName}</div>
                     <DriverPicture driverName={selection as string}></DriverPicture>
-                    <select name="drivers" id="drivers" defaultValue={defaultSeleciton()} onChange={handleSelectionChange}>
+                    <select name="drivers" id="drivers" defaultValue={getIdFromName()} onChange={handleSelectionChange}>
                         <option value={"hidden"} id="hidden" disabled hidden>Select one...</option>
                         {props.driverOptions}
                     </select>
