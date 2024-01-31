@@ -33,7 +33,7 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
     const [trackSelected, setTrackSelected] = useState<apiSportsRacesRes>()
     const [allRaces, setAllRaces] = useState<apiSportsRacesRes[]>();
     const [savedTrackTeam, setSavedTrackTeam] = useState<Team>()
-    const [trackTeam, setTrackTeam] = useState<TeamFrontEnd>()
+    const [trackTeam, setTrackTeam] = useState<TeamFrontEnd>()//more like "EditedTemValues"
     const [globalDate, setDate] = useState<number>(1687465115000) //change this for simulation
     
     function updateTrackTeam<K extends keyof TeamFrontEnd, V extends TeamFrontEnd[K]>(key:K, value: V):void{
@@ -159,7 +159,9 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
                 
                 postNewTeam(props.authData.AccessToken,newTeamRequest)
             }else{
-                updateTeam(props.authData.AccessToken,newTeamRequest)
+                const updatedTeam = {...savedTrackTeam, ...trackTeam} as newTeamRequest
+
+                updateTeam(props.authData.AccessToken,updatedTeam)
             }
 
         }
