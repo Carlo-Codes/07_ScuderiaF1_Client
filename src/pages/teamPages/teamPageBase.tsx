@@ -8,7 +8,7 @@ import {DriverSelectionCard} from './driverCard/driverSelectionCard'
 import { DriverPointsCard } from "./driverCard/driverPointsCard";
 import { RacesApiStore, IdriverTiers, Team } from "@backend/dbTypes";
 import { TeamFrontEnd } from "../../@types/frontEnd";
-import { postNewTeam } from "../../apis/post";
+import { postNewTeam, updateTeam } from "../../apis/post";
 import { AuthenticationResultType,  } from '@aws-sdk/client-cognito-identity-provider'
 
 
@@ -152,10 +152,15 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
         
     }
     
-    function postNewTeamEventHandler(){
+    function postTeamEventHandler(){
         if(props.authData && props.authData.AccessToken){
             const newTeamRequest = trackTeam as newTeamRequest
-            postNewTeam(props.authData.AccessToken,newTeamRequest)
+            if(!savedTrackTeam){
+                
+                postNewTeam(props.authData.AccessToken,newTeamRequest)
+            }else{
+                updateTeam(props.authData.AccessToken,newTeamRequest)
+            }
 
         }
     }
@@ -169,7 +174,7 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
                 const selectionCards = 
                 <div className="selection Conatiner">
                     {generateDriverSelectionCards()}
-                    <button onClick={postNewTeamEventHandler}>Save Team</button>
+                    <button onClick={postTeamEventHandler}>Save Team</button>
                 </div>
 
                 return selectionCards
@@ -181,14 +186,14 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
 
     function generateDriverpontsCard(){
         let driverPointsCards:JSX.Element[] = []
-        if(trackTeam){
+        if(savedTrackTeam){
             let paramKey : keyof SelectionParameters
             for(paramKey in SelectionParams){
                 const param = SelectionParams[paramKey]
-                const Points = trackTeam[param.dbPoints]
-                const driverID = trackTeam[param.dbSelection]
+                const Points = savedTrackTeam[param.dbPoints]
+                const driverID = savedTrackTeam[param.dbSelection]
                 const driver = props.userData.driverData.filter((driver)=>{
-                    if (driver.driver.id = driverID as number){
+                    if (driver.driver.id === driverID as number){
                         return driver
                     }
                 })
@@ -257,27 +262,19 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
         const driverSelectionCards:JSX.Element[] = []
         let paramKey : keyof SelectionParameters
         for(paramKey in SelectionParams){
-            const parameter = SelectionParams[paramKey];
-            let driverID:number|undefined
+            const parameter = SelectionParams[paramKey];      
+           const key = paramKey + " " + trackSelected?.id
             
-            if(savedTrackTeam && savedTrackTeam[parameter.dbSelection]){
-                driverID = savedTrackTeam[parameter.dbSelection]
-            }
-
             if(paramKey === 'dnf'|| paramKey === 'fastestLap'){
-
-                
                 driverSelectionCards.push(
-                    
-                    <DriverSelectionCard key={driverID} userData={props.userData} savedTeam = {savedTrackTeam} selectionParam={parameter} driverOptions={GeneralOptions} updateTeamHandler = {updateTrackTeam}/>
+                    <DriverSelectionCard key={key} userData={props.userData} savedTeam = {savedTrackTeam} selectionParam={parameter} driverOptions={GeneralOptions} updateTeamHandler = {updateTrackTeam}/>
                 )   
             }else{
                 driverSelectionCards.push(
-                    <DriverSelectionCard key={driverID} userData={props.userData} savedTeam = {savedTrackTeam} selectionParam={parameter} driverOptions={driverTierOptions[paramKey].drivers} updateTeamHandler = {updateTrackTeam}/>
+                    <DriverSelectionCard key={key} userData={props.userData} savedTeam = {savedTrackTeam} selectionParam={parameter} driverOptions={driverTierOptions[paramKey].drivers} updateTeamHandler = {updateTrackTeam}/>
                 )   
             }       
         }
-
         return driverSelectionCards
     }
     
