@@ -140,7 +140,7 @@ export function App() {
 
   }
   if(state == States.Team){
-    page = <TeamPageBase userData={userData!} authData={authenticationResult}></TeamPageBase>
+    page = <TeamPageBase userData={userData!} authData={authenticationResult} setUserData={setUserData} ></TeamPageBase>
   }
 
 

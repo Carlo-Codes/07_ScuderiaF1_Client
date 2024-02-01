@@ -28,7 +28,7 @@ interface SelectionParameters {
 }
 
 
-export function TeamPageBase(props:{userData:dataResponse, authData:AuthenticationResultType|undefined}){
+export function TeamPageBase(props:{userData:dataResponse, authData:AuthenticationResultType|undefined, setUserData:React.Dispatch<React.SetStateAction<dataResponse | undefined>>}){
 
     const [trackSelected, setTrackSelected] = useState<apiSportsRacesRes>()
     const [allRaces, setAllRaces] = useState<apiSportsRacesRes[]>();
@@ -42,6 +42,18 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
         setTrackTeam(tempTeam)
     }
     
+    function updateTeamsInUserData(newTeam: Team){
+        let userDataCopy = props.userData
+        let userTeamsCopy = props.userData.userTeams.map((team) => {
+            if(team.competition_id === newTeam.competition_id){
+                return newTeam
+            }else{
+                return team
+            }
+        })
+        userDataCopy.userTeams = userTeamsCopy
+        props.setUserData(userDataCopy)
+    }
     
     useEffect (()=>{
         initPage();
@@ -152,16 +164,17 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
         
     }
     
-    function postTeamEventHandler(){
+    async function postTeamEventHandler(){
         if(props.authData && props.authData.AccessToken){
             const newTeamRequest = trackTeam as newTeamRequest
             if(!savedTrackTeam){
                 
-                postNewTeam(props.authData.AccessToken,newTeamRequest)
+                const newTeam = await postNewTeam(props.authData.AccessToken,newTeamRequest) as unknown as Team[]
+                updateTeamsInUserData(newTeam[0])
             }else{
                 const updatedTeam = {...savedTrackTeam, ...trackTeam} as newTeamRequest
-
-                updateTeam(props.authData.AccessToken,updatedTeam)
+                const newTeam = await updateTeam(props.authData.AccessToken,updatedTeam) as unknown as Team[]
+                updateTeamsInUserData(newTeam[0])
             }
 
         }
