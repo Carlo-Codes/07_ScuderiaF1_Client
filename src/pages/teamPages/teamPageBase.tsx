@@ -7,25 +7,10 @@ import { apiSportsRacesRes } from "@backend/apiSportsResponseTypes";
 import {DriverSelectionCard} from './driverCard/driverSelectionCard'
 import { DriverPointsCard } from "./driverCard/driverPointsCard";
 import { RacesApiStore, IdriverTiers, Team } from "@backend/dbTypes";
-import { TeamFrontEnd } from "../../@types/frontEnd";
+import { TeamFrontEnd, SelectionParameters, SelectionParamsMap} from "@backend/frontEnd"
 import { postNewTeam, updateTeam } from "../../apis/post";
 import { AuthenticationResultType,  } from '@aws-sdk/client-cognito-identity-provider'
 
-
-export interface selectionParam {
-    dbSelection:keyof TeamFrontEnd,
-    dbPoints:keyof TeamFrontEnd,
-    clientName:string
-}
-
-interface SelectionParameters {
-    tier1:selectionParam,
-    tier2:selectionParam,
-    tier3:selectionParam,
-    dnf:selectionParam,
-    fastestLap:selectionParam
-
-}
 
 
 export function TeamPageBase(props:{userData:dataResponse, authData:AuthenticationResultType|undefined, setUserData:React.Dispatch<React.SetStateAction<dataResponse | undefined>>}){
@@ -58,50 +43,6 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
     useEffect (()=>{
         initPage();
     },[])
-
-
-
-
-     const SelectionParams:SelectionParameters = {  //somehow make this self updating if changes? maps names to db colums
-       
-            tier1:{
-            dbSelection:"tier1_driver_id",
-            dbPoints:"tier1_points",
-            clientName: "Tier 1",
-            }
-        ,
-        
-            tier2:{
-           dbSelection:"tier2_driver_id",
-           dbPoints:"tier2_points",
-           clientName: "Tier 2"
-           }
-        ,
-        
-            tier3:{
-           dbSelection:"tier3_driver_id",
-           dbPoints:"tier3_points",
-           clientName: "Tier 3"
-           }
-        ,
-        
-            dnf:{
-           dbSelection:"dnf_driver_id",
-           dbPoints:"dnf_points",
-           clientName: "DNF"
-           }
-        ,
-        
-            fastestLap:{
-            dbSelection:"fastest_lap_driver_id",
-            dbPoints: "fastest_lap_points",
-            clientName: "Fastest Lap"
-           }
-        
-    }
-
-
-
 
     function initPage(){
         getRaces()
@@ -203,8 +144,8 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
         let driverPointsCards:JSX.Element[] = []
         if(savedTrackTeam){
             let paramKey : keyof SelectionParameters
-            for(paramKey in SelectionParams){
-                const param = SelectionParams[paramKey]
+            for(paramKey in SelectionParamsMap){
+                const param = SelectionParamsMap[paramKey]
                 const Points = savedTrackTeam[param.dbPoints]
                 const driverID = savedTrackTeam[param.dbSelection]
                 const driver = props.userData.driverData.filter((driver)=>{
@@ -214,7 +155,7 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
                 })
 
                 driverPointsCards.push(
-                    <DriverPointsCard key={paramKey} selectionParam={SelectionParams[paramKey].clientName} driver={driver[0].driver} points={Points as number} ></DriverPointsCard>
+                    <DriverPointsCard key={paramKey} selectionParam={SelectionParamsMap[paramKey].clientName} driver={driver[0].driver} points={Points as number} ></DriverPointsCard>
                 )
             }
     
@@ -276,8 +217,8 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
         //generating the cards
         const driverSelectionCards:JSX.Element[] = []
         let paramKey : keyof SelectionParameters
-        for(paramKey in SelectionParams){
-            const parameter = SelectionParams[paramKey];      
+        for(paramKey in SelectionParamsMap){
+            const parameter = SelectionParamsMap[paramKey];      
            const key = paramKey + " " + trackSelected?.id
             
             if(paramKey === 'dnf'|| paramKey === 'fastestLap'){

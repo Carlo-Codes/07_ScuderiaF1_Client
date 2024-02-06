@@ -4,8 +4,7 @@ import { apiSportsDriver } from "@backend/apiSportsResponseTypes";
 import './driverCard.css'
 import { DriverPicture } from "./DriverPicture";
 import { Team } from "@backend/dbTypes";
-import { selectionParam } from "../teamPageBase";
-import { TeamFrontEnd } from "../../../@types/frontEnd";
+import { TeamFrontEnd, selectionParam } from "@backend/frontEnd" ;
 import { dataResponse } from "@backend/HTTPtypes";
 
 
