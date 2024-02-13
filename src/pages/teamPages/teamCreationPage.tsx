@@ -48,12 +48,12 @@ export function TeamCreationPage(){
         )
     }
 
-    return (
+/*     return (
         <TeamPageBase>
             <div className="teamCreationCardInternals">
                 {driverSelectionCards}
                 <button>Save</button>
             </div>
         </TeamPageBase>
-    )
+    ) */
 }
