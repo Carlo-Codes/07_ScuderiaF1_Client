@@ -1,12 +1,12 @@
 import {authenticationRequest, newUserRequest, confirmUserRequest} from '@backend/HTTPtypes'
 import {InitiateAuthResponse, ConfirmSignUpResponse, AuthenticationResultType} from 'aws-sdk/clients/cognitoidentityserviceprovider'
 import { SignUpCommandOutput,} from '@aws-sdk/client-cognito-identity-provider/dist-types/commands/SignUpCommand';
-
+import {newUserRoute} from './00routes'
 
 
 
 export const login = async (creds:authenticationRequest):Promise<InitiateAuthResponse | string> => { //need to ask about error types aws
-    const res = await fetch('http://localhost:7000/api/newUser/authPassword', {
+    const res = await fetch(newUserRoute + 'authPassword', {
        method : 'POST',
        mode : 'cors',
        headers : {
@@ -24,7 +24,7 @@ export const login = async (creds:authenticationRequest):Promise<InitiateAuthRes
 
 
 export const signUp = async (creds:newUserRequest): Promise<SignUpCommandOutput | string> => {
-    const res = await fetch('http://localhost:7000/api/newUser/newUser', {
+    const res = await fetch(newUserRoute + 'newUser', {
        method : 'POST',
        mode : 'cors',
        headers : {
@@ -42,7 +42,7 @@ export const signUp = async (creds:newUserRequest): Promise<SignUpCommandOutput 
 
 
 export const confirmUser = async (creds:confirmUserRequest): Promise <confirmUserRequest | string> => {
-    const res = await fetch('http://localhost:7000/api/newUser/confirmUser', {
+    const res = await fetch(newUserRoute + 'confirmUser', {
         method : 'POST',
         mode : 'cors',
         headers : {
@@ -59,7 +59,7 @@ export const confirmUser = async (creds:confirmUserRequest): Promise <confirmUse
 }
 
 export const refreshToken = async (token:string) : Promise< AuthenticationResultType | string>  => {
-    const res  = await fetch('http://localhost:7000/api/newUser/refreshToken', {
+    const res  = await fetch(newUserRoute + 'refreshToken', {
         method : 'GET',
         mode : 'cors',
         headers : {

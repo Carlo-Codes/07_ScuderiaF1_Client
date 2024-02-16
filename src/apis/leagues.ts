@@ -1,7 +1,8 @@
-import {LeagueAndTeams,newLeagueRequest} from '@backend/HTTPtypes'
+import {LeagueAndTeams,joinLeagueRequest,newLeagueRequest} from '@backend/HTTPtypes'
+import {leagueRoute} from './00routes'
 
 export async function createLeague(request:newLeagueRequest){
-    const res = await fetch('http://localhost:7000/api/league/newLeague', {
+    const res = await fetch(leagueRoute + 'newLeague', {
         method : 'Post',
         headers : {
          "Content-Type": "application/json",
@@ -17,3 +18,4 @@ export async function createLeague(request:newLeagueRequest){
      }
      return res.json()
 }
+

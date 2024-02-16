@@ -1,7 +1,12 @@
-import {dataResponse} from '@backend/HTTPtypes'
+import {LeagueAndTeams,joinLeagueRequest,newLeagueRequest, dataResponse} from '@backend/HTTPtypes'
+import {userRoute} from './00routes'
+
+export async function joinUserToLeague(request:joinLeagueRequest){
+    const res = await fetch(userRoute + )
+}
 
 export async function getData(accessToken:string):Promise<dataResponse|string>{
-    const res = await fetch('http://localhost:7000/api/user/getData', {
+    const res = await fetch(userRoute + 'getData', {
        method : 'GET',
        headers : {
         "Content-Type": "application/json",

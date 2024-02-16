@@ -11,6 +11,7 @@ import CognitoIdentityServiceProvider, {InitiateAuthResponse} from 'aws-sdk/clie
 
 export function SignUpPage(props:{setAppAccessToken:(token:AuthenticationResultType | undefined)=>void, setLoginStatus:React.Dispatch<React.SetStateAction<boolean>>, getInitialData:React.Dispatch<React.SetStateAction<void>>}){
 
+    const [email, setEmail] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [retypePassword, setRetypePassword] = useState('')
@@ -31,7 +32,7 @@ export function SignUpPage(props:{setAppAccessToken:(token:AuthenticationResultT
 
     const initLogin =  async () => {
         try{
-            const res = await login({email:username, password:password} as newUserRequest)
+            const res = await login({email:email, password:password} as newUserRequest)
             if(typeof res == 'string'){
                 setRequestStatus(res)
                 return
@@ -53,9 +54,9 @@ export function SignUpPage(props:{setAppAccessToken:(token:AuthenticationResultT
             if(password != retypePassword){
                 throw new Error("Passwords are not the same")
             }
-            const res = await signUp({email:username, password:password} as newUserRequest)
+            const res = await signUp({email:email, username:username, password:password} as newUserRequest)
             if(typeof res == 'string'){
-                setRequestStatus(res)
+                setRequestStatus('Please verify your email address, check your inbox')
                 return
             }
             setloginState(LOGIN_STATE.verifyEmail)
@@ -69,7 +70,7 @@ export function SignUpPage(props:{setAppAccessToken:(token:AuthenticationResultT
 
     const initVerify = async () => {
         try {
-            const res = await confirmUser({email:username,code:verificationCode})
+            const res = await confirmUser({email:email,code:verificationCode})
             if(typeof res == 'string'){
                 setRequestStatus(res)
                 return
@@ -88,7 +89,7 @@ export function SignUpPage(props:{setAppAccessToken:(token:AuthenticationResultT
         <>
             <Card>
                 <div className="interactionInternals">
-                    <CustomTextInput inputName="Username" changeHandler={setUsername} inputType='email'></CustomTextInput>
+                    <CustomTextInput inputName="Email" changeHandler={setEmail} inputType='email'></CustomTextInput>
                     <CustomTextInput inputName="Password" changeHandler={setPassword} inputType='password'></CustomTextInput>
                     <button onClick={initLogin}>Login</button>
                 </div>
@@ -107,7 +108,8 @@ export function SignUpPage(props:{setAppAccessToken:(token:AuthenticationResultT
         <>
             <Card>
                 <div className="interactionInternals">
-                    <CustomTextInput inputName="Username" changeHandler={setUsername} inputType='email'></CustomTextInput>
+                    <CustomTextInput inputName="Email" changeHandler={setEmail} inputType='email'></CustomTextInput>
+                    <CustomTextInput inputName="Username" changeHandler={setUsername} inputType='username'></CustomTextInput>
                     <CustomTextInput inputName="Password" changeHandler={setPassword} inputType='password' ></CustomTextInput>
                     <CustomTextInput inputName="Retype Password" changeHandler={setRetypePassword} inputType='password'></CustomTextInput>
                     <button onClick={initSignUp}>Sign Up</button>
@@ -130,7 +132,7 @@ export function SignUpPage(props:{setAppAccessToken:(token:AuthenticationResultT
         <>
             <Card>
                 <div className="interactionInternals">
-                    <CustomTextInput inputName="Username" changeHandler={setUsername} inputType='email'></CustomTextInput>
+                    <CustomTextInput inputName="Email" changeHandler={setEmail} inputType='email'></CustomTextInput>
                     <CustomTextInput inputName="Varification Code" changeHandler={setVerificationCode} inputType='text' ></CustomTextInput>
                     <button onClick={initVerify}>Verify</button>
                 </div>
