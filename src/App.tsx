@@ -15,6 +15,7 @@ import {login, refreshToken} from './apis/auth'
 import { getData } from './apis/user';
 import { AuthenticationResultType,  } from '@aws-sdk/client-cognito-identity-provider'
 import { TeamPageBase } from './pages/teamPages/teamPageBase';
+import { AccountPage } from './pages/accountPage/accountPage';
 
 export interface navItemInterface{
   name:string,
@@ -131,18 +132,19 @@ export function App() {
   if(state == States.Home){
 
   }
-  if(state == States.Leagues){
-    if(userData && authenticationResult){
-      page = <LeaguePage userData={userData} authentication ={authenticationResult}></LeaguePage>
+  if(userData && authenticationResult){
+    if(state == States.Leagues){
+        page = <LeaguePage userData={userData} authentication ={authenticationResult}></LeaguePage>
     }
-  }
-  if(state == States.Account){
+    
+    if(state == States.Account){
+      page = <AccountPage userData={userData} authentication ={authenticationResult}></AccountPage>
+    }
 
-  }
-  if(state == States.Team){
-    page = <TeamPageBase userData={userData!} authData={authenticationResult} setUserData={setUserData} ></TeamPageBase>
-  }
-
+    if(state == States.Team){
+      page = <TeamPageBase userData={userData} authData={authenticationResult} setUserData={setUserData} ></TeamPageBase>
+    }
+}
 
   if(LogInState){
     return (

@@ -1,6 +1,6 @@
 import {Card} from '../../../Util/card/card'
 import {League} from '@backend/dbTypes'
-import './leaguesCard.css'
+import './leaguesSettings.css'
 import { dataResponse, joinLeagueRequest } from '@backend/HTTPtypes';
 import { CustomTextInput } from '../../../Util/input/input';
 import { useState } from 'react';

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {Card} from '../../../Util/card/card'
 import {createLeague} from '../../../apis/leagues'
-import './leaguesCard.css'
+import './leaguesSettings.css'
 import { dataResponse, newLeagueRequest } from '@backend/HTTPtypes'
 import { CustomTextInput, CustomBooleanInput} from '../../../Util/input/input'
 import { AuthenticationResultType } from '@aws-sdk/client-cognito-identity-provider'
@@ -31,11 +31,6 @@ export function CreateLeagueCard(props:{userData:dataResponse, authentication:Au
 
                 <div className='CreateLeagueInput'>
                     <CustomTextInput inputName={'League Name'} changeHandler={setLeagueName} inputType='text'></CustomTextInput>
-                </div>
-
-                <div className='CreateLeagueInput'>
-                    <CustomBooleanInput inputName={'Simulation'} changeHandler={setSimulationStatus} inputType='checkbox'></CustomBooleanInput>
-
                 </div>
 
                 <div className='buttons'>

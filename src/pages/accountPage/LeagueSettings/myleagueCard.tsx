@@ -1,6 +1,6 @@
 import {Card} from '../../../Util/card/card'
 import {League} from '@backend/dbTypes'
-import './leaguesCard.css'
+import './leaguesSettings.css'
 import { dataResponse } from '@backend/HTTPtypes';
 
 export function MyLeaguesCard(props:{userData:dataResponse}){
