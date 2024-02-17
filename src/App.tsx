@@ -73,9 +73,8 @@ export function App() {
           setErrorState(err.message)
       }
     }
-
-    
   }
+
 
   const initRefreshToken = async () => {
     try {
@@ -102,10 +101,12 @@ export function App() {
 
   enum States {
     Login = 'Login',
+    LoginLoading = 'LoginLoading',
     Home = 'Home',
     Leagues = 'Leagues',
     Account = 'Account',
     Team = 'Team',
+
   }
  
   const navItems:navItemInterface[] = [
@@ -138,7 +139,7 @@ export function App() {
     }
     
     if(state == States.Account){
-      page = <AccountPage userData={userData} authentication ={authenticationResult}></AccountPage>
+      page = <AccountPage userData={userData} authentication ={authenticationResult} reloadData={initGetData} ></AccountPage>
     }
 
     if(state == States.Team){

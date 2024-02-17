@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { joinUserToLeague } from '../../../apis/user';
 import { AuthenticationResultType } from 'aws-sdk/clients/cognitoidentityserviceprovider';
 
-export function JoinLeagueCard(props:{userData:dataResponse, authentication:AuthenticationResultType}){
+export function JoinLeagueCard(props:{userData:dataResponse, authentication:AuthenticationResultType, reloadData:() => Promise<void>}){
     const [inviteCode, setInviteCode] = useState('')
     const [status, setStatus] = useState('')
 
@@ -20,6 +20,7 @@ export function JoinLeagueCard(props:{userData:dataResponse, authentication:Auth
         const res = await joinUserToLeague(req)
         if(res.ok){
             setStatus('League Joined')
+            props.reloadData()
         }else{
             setStatus("there's been an error")
         }
