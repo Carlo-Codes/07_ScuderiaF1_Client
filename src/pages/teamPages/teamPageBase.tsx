@@ -8,7 +8,7 @@ import {DriverSelectionCard} from './driverCard/driverSelectionCard'
 import { DriverPointsCard } from "./driverCard/driverPointsCard";
 import { RacesApiStore, IdriverTiers, Team } from "@backend/dbTypes";
 import { TeamFrontEnd, SelectionParameters, SelectionParamsMap} from "@backend/frontEnd"
-import { postNewTeam, updateTeam } from "../../apis/post";
+import { postNewTeam, updateTeam } from "../../apis/team";
 import { AuthenticationResultType,  } from '@aws-sdk/client-cognito-identity-provider'
 
 

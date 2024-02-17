@@ -12,7 +12,7 @@ import { LeaguePage } from './pages/LeaguePage/leaguePage';
 import {NavBar} from './Util/UI/navBar/navBar'
 import {dataResponse} from '@backend/HTTPtypes'
 import {login, refreshToken} from './apis/auth'
-import { getData } from './apis/get';
+import { getData } from './apis/user';
 import { AuthenticationResultType,  } from '@aws-sdk/client-cognito-identity-provider'
 import { TeamPageBase } from './pages/teamPages/teamPageBase';
 

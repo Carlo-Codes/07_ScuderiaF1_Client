@@ -14,7 +14,6 @@ export function CreateLeagueCard(props:{userData:dataResponse, authentication:Au
     const createNewLeagueHandler = async () =>{
         const req: newLeagueRequest = {
             league_name:leagueName,
-            simulation:simulationStatus,
             token:props.authentication.AccessToken!,
         }
         const res = await createLeague(req);

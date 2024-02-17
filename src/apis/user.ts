@@ -2,7 +2,16 @@ import {LeagueAndTeams,joinLeagueRequest,newLeagueRequest, dataResponse} from '@
 import {userRoute} from './00routes'
 
 export async function joinUserToLeague(request:joinLeagueRequest){
-    const res = await fetch(userRoute + )
+    const res = await fetch(userRoute + 'addUserToLeague',{
+        method : 'POST',
+        headers : {
+            "Content-Type": "application/json",
+            "authorization": `Bearer${request.token}`
+           },
+        body:JSON.stringify(request)
+    })
+
+    return res
 }
 
 export async function getData(accessToken:string):Promise<dataResponse|string>{
