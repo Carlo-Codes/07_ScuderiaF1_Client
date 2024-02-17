@@ -33,7 +33,9 @@ export function JoinLeagueCard(props:{userData:dataResponse, authentication:Auth
                     <div className='joinLeagueCardTitle'>
                         Join A League
                     </div>
-                    <CustomTextInput inputName='inviteCode' inputType='text' changeHandler={setInviteCode} ></CustomTextInput>
+                    <div className='inviteInputContainer'>
+                        <CustomTextInput inputName='inviteCode' inputType='text' changeHandler={setInviteCode} ></CustomTextInput>
+                    </div>
                     <div className='status'>{status}</div>
                     <button onClick={joinLeagueHandler}>Join</button>
 

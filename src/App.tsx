@@ -135,7 +135,7 @@ export function App() {
   }
   if(userData && authenticationResult){
     if(state == States.Leagues){
-        page = <LeaguePage userData={userData} authentication ={authenticationResult}></LeaguePage>
+        page = <LeaguePage userData={userData} authentication={authenticationResult} reloadData={initGetData}></LeaguePage>
     }
     
     if(state == States.Account){
@@ -143,7 +143,7 @@ export function App() {
     }
 
     if(state == States.Team){
-      page = <TeamPageBase userData={userData} authData={authenticationResult} setUserData={setUserData} ></TeamPageBase>
+      page = <TeamPageBase userData={userData} authData={authenticationResult} setUserData={setUserData} reloadData={initGetData}></TeamPageBase>
     }
 }
 

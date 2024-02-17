@@ -7,10 +7,10 @@ import { AuthenticationResultType } from "@aws-sdk/client-cognito-identity-provi
 
 
 
-export function LeaguePage(props:{userData:dataResponse, authentication:AuthenticationResultType}){
+export function LeaguePage(props:{userData:dataResponse, authentication:AuthenticationResultType, reloadData:() => Promise<void>}){
     return (
         <div className="leaguePage">
-            <LeaguesCard userData={props.userData}></LeaguesCard>
+            <LeaguesCard userData={props.userData} reloadData={props.reloadData} authentication={props.authentication}></LeaguesCard>
         </div>
     )
 }

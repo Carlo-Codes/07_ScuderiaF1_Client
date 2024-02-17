@@ -22,7 +22,6 @@ export const login = async (creds:authenticationRequest):Promise<InitiateAuthRes
     return res.json()
 }
 
-
 export const signUp = async (creds:newUserRequest): Promise<SignUpCommandOutput | string> => {
     const res = await fetch(newUserRoute + 'newUser', {
        method : 'POST',
@@ -39,7 +38,6 @@ export const signUp = async (creds:newUserRequest): Promise<SignUpCommandOutput 
     }
     return res.json()
 }
-
 
 export const confirmUser = async (creds:confirmUserRequest): Promise <confirmUserRequest | string> => {
     const res = await fetch(newUserRoute + 'confirmUser', {

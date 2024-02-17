@@ -34,5 +34,11 @@
             ],
             "type": "node"
         },
+        {
+            "type": "firefox",
+            "request": "launch",
+            "name": "Launch in Browser",
+            "url": "http://localhost:8000"
+          }
     ]
 }

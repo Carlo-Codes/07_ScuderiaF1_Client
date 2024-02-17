@@ -13,7 +13,7 @@ import { AuthenticationResultType,  } from '@aws-sdk/client-cognito-identity-pro
 
 
 
-export function TeamPageBase(props:{userData:dataResponse, authData:AuthenticationResultType|undefined, setUserData:React.Dispatch<React.SetStateAction<dataResponse | undefined>>}){
+export function TeamPageBase(props:{userData:dataResponse, authData:AuthenticationResultType|undefined, setUserData:React.Dispatch<React.SetStateAction<dataResponse | undefined>>, reloadData:() => Promise<void>}){
 
     const [trackSelected, setTrackSelected] = useState<apiSportsRacesRes>()
     const [allRaces, setAllRaces] = useState<apiSportsRacesRes[]>();
@@ -117,6 +117,7 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
                 const newTeam = await updateTeam(props.authData.AccessToken,updatedTeam) as unknown as Team[]
                 updateTeamsInUserData(newTeam[0])
             }
+            await props.reloadData()
 
         }
     }
@@ -288,7 +289,7 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
             
             <Card>
                 <>
-                    <TrackCard trackName={trackSelected?.circuit.name!} nextRaceHandler={nextRaceHandler} previousRaceHandler={previousRaceHandler} date={trackSelected?.date}></TrackCard>
+                    <TrackCard trackName={trackSelected?.circuit.name!} nextRaceHandler={nextRaceHandler} previousRaceHandler={previousRaceHandler} date={trackSelected?.date!}></TrackCard>
                     {generateDriverCards()}
                 </>
             </Card>

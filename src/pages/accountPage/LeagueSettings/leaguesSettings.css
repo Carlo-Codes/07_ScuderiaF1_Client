@@ -45,4 +45,11 @@ label{
     padding: 10px;
 }
 
+.inviteInputContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+}
+
 
