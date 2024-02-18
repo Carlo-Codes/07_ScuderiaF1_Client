@@ -17,9 +17,20 @@ export function LeaguesCard(props:{userData:dataResponse, authentication:Authent
     }
 
 
+    if(!props.userData.participatingLeague[0]){
+        const noLeagueMessage=
+            <div className='noLeagueMessage'>
+                You're not in any Leagues! Join or create one on the Accounts Page
+            </div>
+        return noLeagueMessage
+    }
+
+
     const [userTeamsTotalPoints, setUserTeamsTotalPoints] = useState<userTeamsTotalPoints[]>()
     const [selectedLeagueId, setSelectedLeagueId] = useState<number>(props.userData.participatingLeague[0].id)
     const [error, setError] = useState('')
+
+   
 
     async function getTeamsinSelectedLeague(){
         if(props.authentication.AccessToken){
@@ -101,6 +112,7 @@ export function LeaguesCard(props:{userData:dataResponse, authentication:Authent
         const teamUser = await combineUsersTeamsinSelectedLeague()
         if(teamUser){
             const teamUserPoints = await sumPoints(teamUser)
+            teamUserPoints.sort((a,b) => b.totalPoint! - a.totalPoint!)
             setUserTeamsTotalPoints(teamUserPoints)
         }
     }
@@ -126,11 +138,16 @@ export function LeaguesCard(props:{userData:dataResponse, authentication:Authent
         )
     })
 
-    const tableRows = userTeamsTotalPoints?.map((user) => {
+    const tableRows = userTeamsTotalPoints?.map((user, i) => {
+        let cssClass = 'leagueTableRow'
+        if(i % 2 == 0){
+            cssClass = 'leagueTableRowAlt'
+        }
         const row = 
-        <tr key={user.userId}>
+        <tr key={user.userId} className={cssClass}>
             <td>{user.username}</td>
-            <td>{user.totalPoint}</td>
+            <td className='position'>{i+1}</td>
+            <td className='points'>{user.totalPoint}</td>
         </tr>
         return row
     })
@@ -138,11 +155,15 @@ export function LeaguesCard(props:{userData:dataResponse, authentication:Authent
     const leagueTable = 
         <div className='leagueTableContainer'>
             <table>
-                <tr>
-                    <th>UserName</th>
+                <tbody>
+                <tr>                    
+                    <th>Username</th>
+                    <th>Position</th>
                     <th>Points</th>
                 </tr>
                 {tableRows}
+
+                </tbody>
             </table> 
         </div>
 

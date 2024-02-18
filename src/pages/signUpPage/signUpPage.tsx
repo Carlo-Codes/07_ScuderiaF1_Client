@@ -20,6 +20,9 @@ export function SignUpPage(props:{setAppAccessToken:(token:AuthenticationResultT
     const [loginState, setloginState] = useState(0)
     const [requestStatus, setRequestStatus] = useState('')
 
+    const [statusClass, setStatusClass]  = useState('requestStatus')
+
+
     enum LOGIN_STATE {
         login,
         signUp,
@@ -32,9 +35,13 @@ export function SignUpPage(props:{setAppAccessToken:(token:AuthenticationResultT
 
     const initLogin =  async () => {
         try{
+            if(!email||!password){
+                throw new Error('please fill all fields')
+            }
             const res = await login({email:email, password:password} as newUserRequest)
             if(typeof res == 'string'){
                 setRequestStatus(res)
+                setStatusClass('requestStatusFade')
                 return
             }
             localStorage.setItem('authentication', JSON.stringify(res.AuthenticationResult))
@@ -54,9 +61,12 @@ export function SignUpPage(props:{setAppAccessToken:(token:AuthenticationResultT
             if(password != retypePassword){
                 throw new Error("Passwords are not the same")
             }
+            if(!email||!password||!username){
+                throw new Error('please fill all fields')
+            }
             const res = await signUp({email:email, username:username, password:password} as newUserRequest)
             if(typeof res == 'string'){
-                setRequestStatus('Please verify your email address, check your inbox')
+                setRequestStatus(res)
                 return
             }
             setloginState(LOGIN_STATE.verifyEmail)
@@ -161,17 +171,22 @@ export function SignUpPage(props:{setAppAccessToken:(token:AuthenticationResultT
 
 
     return(
-        <div className="signUpPage">
-            <div className="signUpHeader">
-                Scuderia F1 logo
-            </div>
-            <div className="signUpBody">
-                {stateRenderer()}
-                <div className="requestStatus">{requestStatus}</div>
-            </div>
-            <div className="signUpFooter">
-                by Carlo
+        <div className="signUpPageContainer">
+            <div className="signUpPage">
+                <div className="signUpHeader">
+                    Scuderia F1 logo
+                </div>
+                <div className="signUpBody">
+                    {stateRenderer()}
+                    
+                </div>
+    
+                <div className={statusClass}>{requestStatus}</div>
+                <div className="signUpFooter">
+                    by Carlo
+                </div>
             </div>
         </div>
+        
     )
 }

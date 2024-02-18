@@ -20,32 +20,50 @@ export function MyLeaguesCard(props:{userData:dataResponse, authentication:Authe
         }
     }
 
-    const myLeagueDivs = props.userData.userLeagues.map((league,i)=>{
+    const myLeagueRows = props.userData.userLeagues.map((league,i)=>{
         const delbtnHandler = async() => {
             await deleteLeagueHandler(league.id)
             await props.reloadData()
         }
         return (
-            <li key={league.id} className='myLeague'>
-                <div className='myLeagueCard'>
-                    <div className='LeagueName'>{league.league_name}</div>
-                    <div className='myLeagueInviteCode'>Invite : {league.inviteCode}</div>
-                    <button onClick={delbtnHandler}>Delete</button>
-                </div>
-            </li>
+            <tr key={league.id} className='myLeaguesRow'>
+                    <td>{league.league_name}</td>
+                    <td className='inviteCode'>{league.inviteCode}</td>
+                    <td><button onClick={delbtnHandler}>Delete</button></td>
+            </tr>
         )
     })
 
+    const headers =                         
+        <tr className='myLeaguesHeader'>
+            <th>Name</th>
+            <th>Invite Code</th>
+            <th></th>
+        </tr>
+    
+    function tableOnLeagues(){
+        if(props.userData.userLeagues[0]){
+            return(
+                <table className='myLeaguesTable'>
+                    {headers}
+                    {myLeagueRows}
+                </table>
+            )
+
+        }else {
+            return (<div>You do not own any leagues</div>)
+        }
+    }
+
     return (
-        <div className='LeagueCard'>
+        <div className=''>
             <Card>
-                <div className='leagueCardInternal'>
-                    <div className='LeagueCardTitle'>
+                <div className=''>
+                    <div className=''>
                         My Leagues
                     </div>
-                    <ul className='LeagueList'>
-                        {myLeagueDivs}
-                    </ul>
+                    {tableOnLeagues()}
+
                 </div>
             </Card>
         </div>

@@ -29,7 +29,9 @@
 }
 
 .myLeagueInviteCode{
+    max-width: 300px;
     margin: 15px;
+
 }
 
 .LeagueCardTitle{
@@ -50,6 +52,27 @@ label{
     flex-direction: row;
     justify-content: space-around;
 
+}
+
+.myLeaguesRow td{
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.myLeaguesRow .inviteCode{
+    max-width: 200px;
+    overflow-wrap: break-word
+}
+
+
+.myLeaguesHeader th {
+    padding-top: 20px;
+}
+
+.myLeaguesTable{
+    min-width: fit-content;
 }
 
 

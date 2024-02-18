@@ -45,4 +45,44 @@ label{
     padding: 10px;
 }
 
+.noLeagueMessage{
+    color: red;
+    font-weight: bold;
+}
 
+.leagueTableContainer table{
+
+    border-collapse: collapse;
+}
+
+.leagueTableContainer th{
+    font-size: larger;
+}
+
+.leagueTableRow, .leagueTableRowAlt{
+    font-size: larger;
+
+}
+
+.leagueTableRow td, .leagueTableRowAlt td, .selectLeagueContainer{
+    padding-left: 50px;
+    padding-right: 50px;
+    margin: 0px;
+    
+}
+
+.leagueTableRowAlt{
+    background-color: rgb(94, 94, 94)
+}
+
+.LeagueCard{
+    width: max-content;
+}
+
+.myLeaguesRow{
+    justify-items: center;
+}
+
+.selectLeagueContainer{
+    padding: 20px;
+}
