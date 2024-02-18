@@ -26,7 +26,8 @@ export function SignUpPage(props:{setAppAccessToken:(token:AuthenticationResultT
     enum LOGIN_STATE {
         login,
         signUp,
-        verifyEmail
+        verifyEmail,
+        resetPassword
     }
 
     const changeStateHanler = (e:React.MouseEvent<HTMLButtonElement>) => {

@@ -1,7 +1,8 @@
 import React from "react"
 import './navItem.css'
+import { States } from "../../../../App";
 
-export function NavItem(props:{name:string, eventlistener:(state: string) => void}){
+export function NavItem(props:{name:States, eventlistener:(state: States) => void}){
 
     const eventhandler = ()=>{
         props.eventlistener(props.name)

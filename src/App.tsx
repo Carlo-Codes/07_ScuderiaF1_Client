@@ -18,7 +18,7 @@ import { TeamPageBase } from './pages/teamPages/teamPageBase';
 import { AccountPage } from './pages/accountPage/accountPage';
 
 export interface navItemInterface {
-  name: string,
+  name: States,
   stateChanger: (state: States) => void;
 }
 
@@ -33,7 +33,7 @@ export enum States {
 
 export function App() {
   const [LogInState, setLogin] = useState(false);
-  const [state, setState] = useState('Home');
+  const [state, setState] = useState(States.Team);
   const [userData, setUserData] = useState<dataResponse>();
   const [authenticationResult, setauthenticationResult] = useState<AuthenticationResultType>();
   const [errorState, setErrorState] = useState<string>();
@@ -111,22 +111,23 @@ export function App() {
 
 
   const navItems: navItemInterface[] = [
-    {
+/*     {
       name: States.Home,
+      stateChanger: stateChanger
+    }, */
+    {
+      name: States.Leagues,
       stateChanger: stateChanger
     },
     {
-      name: States.Leagues,
+      name: States.Team,
       stateChanger: stateChanger
     },
     {
       name: States.Account,
       stateChanger: stateChanger
     },
-    {
-      name: States.Team,
-      stateChanger: stateChanger
-    }
+
   ];
 
   let page: React.ReactNode;

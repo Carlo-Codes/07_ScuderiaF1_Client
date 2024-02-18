@@ -1,3 +1,11 @@
 .navItem{
     padding: 5px;
+    width: max-content;
+    cursor: pointer;
+    transition: 500ms;
+    font-weight: bold;
+}
+
+.navItem:hover{
+    color:#ff6464;
 }
