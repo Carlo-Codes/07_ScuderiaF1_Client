@@ -7,7 +7,7 @@ import { getTeamsInLeague, getUsersInLeague } from '../../../apis/leagues';
 import { AuthenticationResultType } from '@aws-sdk/client-cognito-identity-provider';
 import { SelectionParameters, SelectionParamsMap, selectionParam } from '@backend/frontEnd';
 
-export function LeaguesCard(props:{userData:dataResponse, authentication:AuthenticationResultType, reloadData:() => Promise<void>}){
+export function LeaguesCard(props:{userData:dataResponse, authentication:string, reloadData:() => Promise<void>}){
 
     interface userTeamsTotalPoints{
         username : string,
@@ -33,11 +33,11 @@ export function LeaguesCard(props:{userData:dataResponse, authentication:Authent
    
 
     async function getTeamsinSelectedLeague(){
-        if(props.authentication.AccessToken){
+        if(props.authentication){
 
             const req:getLeagueDataReq = {
                 id: selectedLeagueId,
-                token : props.authentication.AccessToken
+                token : props.authentication
             }
 
             const teamData = await getTeamsInLeague(req) as Team[]
@@ -49,11 +49,11 @@ export function LeaguesCard(props:{userData:dataResponse, authentication:Authent
         }
     }
     async function getUsersInSelectedLeague(){
-        if(props.authentication.AccessToken){
+        if(props.authentication){
 
             const req:getUsersinLeageReq = {
                 id: selectedLeagueId,
-                token : props.authentication.AccessToken
+                token : props.authentication
             }
 
             const usersnames = await getUsersInLeague(req) as getUsersinLeageRes
@@ -174,6 +174,7 @@ export function LeaguesCard(props:{userData:dataResponse, authentication:Authent
             </select>
         </div>
 
+    
     return (
         <div className='LeagueCard'>
             <Card>

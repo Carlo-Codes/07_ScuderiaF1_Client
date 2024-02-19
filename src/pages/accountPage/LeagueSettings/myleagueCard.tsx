@@ -5,14 +5,14 @@ import { DeleteLeagueRequest, dataResponse } from '@backend/HTTPtypes';
 import { deleteLeague } from '../../../apis/leagues';
 import { AuthenticationResultType } from '@aws-sdk/client-cognito-identity-provider';
 
-export function MyLeaguesCard(props:{userData:dataResponse, authentication:AuthenticationResultType, reloadData:() => Promise<void>}){
+export function MyLeaguesCard(props:{userData:dataResponse, authentication:string, reloadData:() => Promise<void>}){
 
    const deleteLeagueHandler = async (id:number) => {
         if(confirm('Are you sure you want to delete this league?')){
-            if(props.authentication.AccessToken){
+            if(props.authentication){
                 const req:DeleteLeagueRequest = {
                     leagueId:id,
-                    token:props.authentication.AccessToken
+                    token:props.authentication
                 }
                 const res = await deleteLeague(req)
                 return res

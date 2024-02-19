@@ -6,7 +6,7 @@ import { dataResponse, newLeagueRequest } from '@backend/HTTPtypes'
 import { CustomTextInput, CustomBooleanInput} from '../../../Util/input/input'
 import { AuthenticationResultType } from '@aws-sdk/client-cognito-identity-provider'
 
-export function CreateLeagueCard(props:{userData:dataResponse, authentication:AuthenticationResultType, reloadData:() => Promise<void>}){
+export function CreateLeagueCard(props:{userData:dataResponse, authentication:string, reloadData:() => Promise<void>}){
 
     const [leagueName, setLeagueName] = useState('')
     const [simulationStatus, setSimulationStatus] = useState(false)
@@ -14,7 +14,7 @@ export function CreateLeagueCard(props:{userData:dataResponse, authentication:Au
     const createNewLeagueHandler = async () =>{
         const req: newLeagueRequest = {
             league_name:leagueName,
-            token:props.authentication.AccessToken!,
+            token:props.authentication,
         }
         await createLeague(req);
         await props.reloadData();

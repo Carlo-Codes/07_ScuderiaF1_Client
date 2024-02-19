@@ -16,6 +16,16 @@ import { getData } from './apis/user';
 import { AuthenticationResultType, } from '@aws-sdk/client-cognito-identity-provider';
 import { TeamPageBase } from './pages/teamPages/teamPageBase';
 import { AccountPage } from './pages/accountPage/accountPage';
+import { fetchAuthSession } from '@aws-amplify/auth';
+import { Amplify, } from 'aws-amplify';
+import type { WithAuthenticatorProps } from '@aws-amplify/ui-react';
+import { withAuthenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+import {AuthUser} from 'aws-amplify/auth'
+import {AuthEventData} from '@aws-amplify/ui'
+import {config} from './amplify/amplifyconfiguration'
+
+Amplify.configure(config);
 
 export interface navItemInterface {
   name: States,
@@ -31,22 +41,24 @@ export enum States {
 
 }
 
-export function App() {
-  const [LogInState, setLogin] = useState(false);
+function App(props:{signOut:(data?: AuthEventData | undefined) => void, user:AuthUser|undefined}) {
   const [state, setState] = useState(States.Team);
   const [userData, setUserData] = useState<dataResponse>();
-  const [authenticationResult, setauthenticationResult] = useState<AuthenticationResultType>();
+  const [accessToken, setAccesstoken] = useState<string>();
   const [errorState, setErrorState] = useState<string>();
 
   useEffect(() => { //download user data from sever when page loads
+    
     initGetData();
-  }, [authenticationResult]);
+  },[accessToken]);
 
-  useEffect(() => {
-    loginWithStorageData();
-  }, []);
+  function signOutApp(){
+    if(props.signOut){
+      props.signOut();
+    }
+  }
 
-  const loginWithStorageData = () => {
+/*   const loginWithStorageData = () => {
     if (!authenticationResult) {
       const auth = localStorage.getItem('authentication');
       const loginDate = Number(localStorage.getItem('loginDate'));
@@ -55,37 +67,37 @@ export function App() {
         setauthenticationResult(parsed_auth);
       }
     }
-  };
+  }; */
   const stateChanger = (state: States) => {
     setState(state);
   };
 
-  function initAccessToken(auth: AuthenticationResultType | undefined) {
+/*   function initAccessToken(auth: AuthenticationResultType | undefined) {
     setauthenticationResult(auth);
-  }
+  } */
 
   const initGetData = async () => {
     try {
-      if (authenticationResult?.AccessToken) {
-        const res = await getData(authenticationResult.AccessToken);
+      if (props.user) {
+        const session = await fetchAuthSession()
+        setAccesstoken(session.tokens?.accessToken.toString()!)
+        const res = await getData(accessToken!);
+      
         if (typeof res == 'string') {
           setErrorState(res);
           return;
         }
         setUserData(res);
-        setLogin(true);
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
-        setLogin(false);
-        initRefreshToken();
         setErrorState(err.message);
       }
-    }
-  };
+    }}
+  
 
 
-  const initRefreshToken = async () => {
+/*   const initRefreshToken = async () => {
     try {
       if (authenticationResult?.RefreshToken) {
         const res = await refreshToken(authenticationResult.RefreshToken);
@@ -104,8 +116,7 @@ export function App() {
         localStorage.removeItem('loginDate');
         setErrorState(err.message);
       }
-    }
-  };
+    } }*/
 
 
 
@@ -135,33 +146,30 @@ export function App() {
   if (state == States.Home) {
 
   }
-  if (userData && authenticationResult) {
+  if (userData && accessToken) {
     if (state == States.Leagues) {
-      page = <LeaguePage userData={userData} authentication={authenticationResult} reloadData={initGetData}></LeaguePage>;
+      page = <LeaguePage userData={userData} authentication={accessToken} reloadData={initGetData}></LeaguePage>;
     }
 
     if (state == States.Account) {
-      page = <AccountPage userData={userData} authentication={authenticationResult} reloadData={initGetData} setLogin={setLogin}></AccountPage>;
+      page = <AccountPage userData={userData} authentication={accessToken} reloadData={initGetData} signout={signOutApp}></AccountPage>;
     }
 
     if (state == States.Team) {
-      page = <TeamPageBase userData={userData} authData={authenticationResult} setUserData={setUserData} reloadData={initGetData}></TeamPageBase>;
+      page = <TeamPageBase userData={userData} authData={accessToken} setUserData={setUserData} reloadData={initGetData}></TeamPageBase>;
     }
   }
 
-  if (LogInState) {
-    return (
-      <>
-        <NavBar navItems={navItems}>
-          {page}
-        </NavBar>
-      </>
-    );
-  } else {
-    return (
-      <SignUpPage setAppAccessToken={initAccessToken} setLoginStatus={setLogin} getInitialData={initGetData}></SignUpPage>
-    );
-  }
+
+  return (
+    <>
+      <NavBar navItems={navItems}>
+        {page}
+      </NavBar>
+    </>
+  );
+  
 }
 
 
+export default withAuthenticator(App);

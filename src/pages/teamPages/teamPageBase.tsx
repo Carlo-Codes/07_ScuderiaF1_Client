@@ -13,7 +13,7 @@ import { AuthenticationResultType,  } from '@aws-sdk/client-cognito-identity-pro
 
 
 
-export function TeamPageBase(props:{userData:dataResponse, authData:AuthenticationResultType|undefined, setUserData:React.Dispatch<React.SetStateAction<dataResponse | undefined>>, reloadData:() => Promise<void>}){
+export function TeamPageBase(props:{userData:dataResponse, authData:string, setUserData:React.Dispatch<React.SetStateAction<dataResponse | undefined>>, reloadData:() => Promise<void>}){
 
     const [trackSelected, setTrackSelected] = useState<apiSportsRacesRes>()
     const [allRaces, setAllRaces] = useState<apiSportsRacesRes[]>();
@@ -106,15 +106,15 @@ export function TeamPageBase(props:{userData:dataResponse, authData:Authenticati
     }
     
     async function postTeamEventHandler(){
-        if(props.authData && props.authData.AccessToken){
+        if(props.authData && props.authData){
             const newTeamRequest = trackTeam as newTeamRequest
             if(!savedTrackTeam){
                 
-                const newTeam = await postNewTeam(props.authData.AccessToken,newTeamRequest) as unknown as Team[]
+                const newTeam = await postNewTeam(props.authData,newTeamRequest) as unknown as Team[]
                 updateTeamsInUserData(newTeam[0])
             }else{
                 const updatedTeam = {...savedTrackTeam, ...trackTeam} as newTeamRequest
-                const newTeam = await updateTeam(props.authData.AccessToken,updatedTeam) as unknown as Team[]
+                const newTeam = await updateTeam(props.authData,updatedTeam) as unknown as Team[]
                 updateTeamsInUserData(newTeam[0])
             }
             await props.reloadData()
