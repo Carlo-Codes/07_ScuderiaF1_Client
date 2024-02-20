@@ -1,9 +1,7 @@
 import {Card} from '../../../Util/card/card'
-import {League} from '@backend/dbTypes'
 import './leaguesSettings.css'
 import { DeleteLeagueRequest, dataResponse } from '@backend/HTTPtypes';
 import { deleteLeague } from '../../../apis/leagues';
-import { AuthenticationResultType } from '@aws-sdk/client-cognito-identity-provider';
 
 export function MyLeaguesCard(props:{userData:dataResponse, authentication:string, reloadData:() => Promise<void>}){
 
@@ -20,7 +18,7 @@ export function MyLeaguesCard(props:{userData:dataResponse, authentication:strin
         }
     }
 
-    const myLeagueRows = props.userData.userLeagues.map((league,i)=>{
+    const myLeagueRows = props.userData.userLeagues.map((league)=>{
         const delbtnHandler = async() => {
             await deleteLeagueHandler(league.id)
             await props.reloadData()

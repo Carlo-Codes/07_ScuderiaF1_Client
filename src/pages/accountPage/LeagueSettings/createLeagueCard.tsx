@@ -1,15 +1,14 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import {Card} from '../../../Util/card/card'
 import {createLeague} from '../../../apis/leagues'
 import './leaguesSettings.css'
 import { dataResponse, newLeagueRequest } from '@backend/HTTPtypes'
-import { CustomTextInput, CustomBooleanInput} from '../../../Util/input/input'
-import { AuthenticationResultType } from '@aws-sdk/client-cognito-identity-provider'
+import { CustomTextInput} from '../../../Util/input/input'
+
 
 export function CreateLeagueCard(props:{userData:dataResponse, authentication:string, reloadData:() => Promise<void>}){
 
     const [leagueName, setLeagueName] = useState('')
-    const [simulationStatus, setSimulationStatus] = useState(false)
 
     const createNewLeagueHandler = async () =>{
         const req: newLeagueRequest = {

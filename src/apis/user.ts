@@ -1,4 +1,4 @@
-import {LeagueAndTeams,joinLeagueRequest,newLeagueRequest, dataResponse} from '@backend/HTTPtypes'
+import {joinLeagueRequest, dataResponse} from '@backend/HTTPtypes'
 import {userRoute} from './00routes'
 
 export async function joinUserToLeague(request:joinLeagueRequest){

@@ -1,7 +1,5 @@
-import React from "react";
-import {Card} from '../../../Util/card/card'
 import './trackCard.css'
-export function TrackCard(props:{trackName:string, nextRaceHandler:()=>void, previousRaceHandler:()=>void, date:string}){
+export function TrackCard(props:{trackName:string|undefined, nextRaceHandler:()=>void, previousRaceHandler:()=>void, date:string|undefined}){
     return (
         <div className="trackSelectionCard">
             <div className="arrow" onClick={props.previousRaceHandler}>&#129092;</div>

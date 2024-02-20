@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Card } from "../../Util/card/card";
 import './signUpPage.css'
 import { CustomTextInput } from "../../Util/input/input";
-import {authenticationRequest, newUserRequest} from '@backend/HTTPtypes'
+import {newUserRequest} from '@backend/HTTPtypes'
 import { login, signUp, confirmUser } from "../../apis/auth";
 import { AuthenticationResultType,  } from '@aws-sdk/client-cognito-identity-provider'
-import CognitoIdentityServiceProvider, {InitiateAuthResponse} from 'aws-sdk/clients/cognitoidentityserviceprovider'
+
 
 
 
@@ -89,7 +89,7 @@ export function SignUpPage(props:{setAppAccessToken:(token:AuthenticationResultT
             setloginState(LOGIN_STATE.login)
             setRequestStatus('User Verified, Please Log in!')
         } catch (error) {
-            
+            console.log(error)
         }
     }
 

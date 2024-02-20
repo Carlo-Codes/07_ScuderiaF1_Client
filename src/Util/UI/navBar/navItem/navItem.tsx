@@ -1,4 +1,4 @@
-import React from "react"
+
 import './navItem.css'
 import { States } from "../../../../App";
 

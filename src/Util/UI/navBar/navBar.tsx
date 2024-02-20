@@ -1,4 +1,4 @@
-import React, { ReactNode, FC} from "react";
+import React, {FC} from "react";
 import { NavItem } from "./navItem/navItem";
 import './navBar.css'
 import {navItemInterface} from '../../../App'

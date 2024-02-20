@@ -1,15 +1,15 @@
-import React, { FunctionComponent, useEffect, useState } from "react"
+import React, {useEffect, useState } from "react"
 import {TrackCard} from './trackCard/trackCard'
 import { Card } from "../../Util/card/card"
-import { PropsWithChildren } from "react"
-import { dataResponse, newLeagueRequest, newTeamRequest, } from "@backend/HTTPtypes";
-import { apiSportsRacesRes } from "@backend/apiSportsResponseTypes";
+
+import { dataResponse, newTeamRequest, } from "@backend/HTTPtypes";
+import { apiSportsDriver, apiSportsRacesRes } from "@backend/apiSportsResponseTypes";
 import {DriverSelectionCard} from './driverCard/driverSelectionCard'
 import { DriverPointsCard } from "./driverCard/driverPointsCard";
-import { RacesApiStore, IdriverTiers, Team } from "@backend/dbTypes";
-import { TeamFrontEnd, SelectionParameters, SelectionParamsMap} from "@backend/frontEnd"
+import {IdriverTiers, Team } from "@backend/dbTypes";
+import { SelectionParameters, SelectionParamsMap} from "@backend/frontEnd"
 import { postNewTeam, updateTeam } from "../../apis/team";
-import { AuthenticationResultType,  } from '@aws-sdk/client-cognito-identity-provider'
+
 
 
 
@@ -18,18 +18,18 @@ export function TeamPageBase(props:{userData:dataResponse, authData:string, setU
     const [trackSelected, setTrackSelected] = useState<apiSportsRacesRes>()
     const [allRaces, setAllRaces] = useState<apiSportsRacesRes[]>();
     const [savedTrackTeam, setSavedTrackTeam] = useState<Team>()
-    const [trackTeam, setTrackTeam] = useState<TeamFrontEnd>()//more like "EditedTemValues"
-    const [globalDate, setDate] = useState<number>(Date.now()) //change this for simulation
+    const [trackTeam, setTrackTeam] = useState<Team>()//more like "EditedTemValues"
+    const [globalDate] = useState<number>(Date.now()) //change this for simulation
     
-    function updateTrackTeam<K extends keyof TeamFrontEnd, V extends TeamFrontEnd[K]>(key:K, value: V):void{
-        let tempTeam = trackTeam || {} as TeamFrontEnd
+    function updateTrackTeam<K extends keyof Team, V extends Team[K]>(key:K, value: V):void{
+        const tempTeam = trackTeam || {} as Team
         tempTeam[key] = value
         setTrackTeam(tempTeam)
     }
     
     function updateTeamsInUserData(newTeam: Team){
-        let userDataCopy = props.userData
-        let userTeamsCopy = props.userData.userTeams.map((team) => {
+        const userDataCopy = props.userData
+        const userTeamsCopy = props.userData.userTeams.map((team) => {
             if(team.competition_id === newTeam.competition_id){
                 return newTeam
             }else{
@@ -52,7 +52,7 @@ export function TeamPageBase(props:{userData:dataResponse, authData:string, setU
 
     function getRaces(){ //including selected races
         let potentialnextRace:apiSportsRacesRes|undefined;
-        let allRacesStore:apiSportsRacesRes[] = []
+        const allRacesStore:apiSportsRacesRes[] = []
         for(let i = 0; i < props.userData.raceData.length; i++){
             const race = props.userData.raceData[i]
             if(race.type == 'Race'){
@@ -142,7 +142,7 @@ export function TeamPageBase(props:{userData:dataResponse, authData:string, setU
     }
 
     function generateDriverpontsCard(){
-        let driverPointsCards:JSX.Element[] = []
+        const driverPointsCards:JSX.Element[] = []
         if(savedTrackTeam){
             let paramKey : keyof SelectionParameters
             for(paramKey in SelectionParamsMap){
@@ -204,7 +204,8 @@ export function TeamPageBase(props:{userData:dataResponse, authData:string, setU
             if(drivers){
                 for(let i = 0; i < drivers.length; i++){
                     const driverObj = props.userData.driverData.filter((driver)=>{
-                        if(driver.driver.id === drivers[i].id){
+                        const driverTyped = drivers[i] as apiSportsDriver
+                        if(driver.driver.id === driverTyped.id){
                             return driver
                         }
                     })[0]
@@ -288,8 +289,8 @@ export function TeamPageBase(props:{userData:dataResponse, authData:string, setU
         <div className="teamContainer">
             
             <Card>
-                <>
-                    <TrackCard trackName={trackSelected?.circuit.name!} nextRaceHandler={nextRaceHandler} previousRaceHandler={previousRaceHandler} date={trackSelected?.date!}></TrackCard>
+                <>  
+                    <TrackCard trackName={trackSelected?.circuit.name} nextRaceHandler={nextRaceHandler} previousRaceHandler={previousRaceHandler} date={trackSelected?.date}></TrackCard>
                     {generateDriverCards()}
                 </>
             </Card>

@@ -1,4 +1,4 @@
-import {DeleteLeagueRequest, LeagueAndTeams,getLeagueDataReq,getTeamsinLeageReq,getUsersinLeageReq,getUsersinLeageRes,joinLeagueRequest,newLeagueRequest} from '@backend/HTTPtypes'
+import {DeleteLeagueRequest,getLeagueDataReq,getTeamsinLeageReq,getUsersinLeageReq,getUsersinLeageRes,newLeagueRequest} from '@backend/HTTPtypes'
 import {leagueRoute} from './00routes'
 import { League, Team} from '@backend/dbTypes';
 

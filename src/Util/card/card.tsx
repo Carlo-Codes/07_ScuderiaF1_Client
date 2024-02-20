@@ -1,4 +1,4 @@
-import React, { ReactChildren, ReactPropTypes } from "react";
+import React from "react";
 import './card.css'
 
 export function Card ({children}:{children:React.ReactElement}){

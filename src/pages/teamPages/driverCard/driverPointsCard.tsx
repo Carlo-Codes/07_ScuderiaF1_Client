@@ -1,7 +1,6 @@
-import React, { OptionHTMLAttributes, useState } from "react"
-import { Card } from "../../../Util/card/card"
+
 import { apiSportsDriver } from "@backend/apiSportsResponseTypes";
-import {TeamResults} from "@backend/dbTypes"
+
 import './driverCard.css'
 import { DriverPicture } from "./DriverPicture";
 

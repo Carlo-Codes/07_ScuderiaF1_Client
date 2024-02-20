@@ -1,20 +1,19 @@
-import React, { OptionHTMLAttributes, useState } from "react"
-import { Card } from "../../../Util/card/card"
-import { apiSportsDriver } from "@backend/apiSportsResponseTypes";
+import React, {useState } from "react"
 import './driverCard.css'
 import { DriverPicture } from "./DriverPicture";
-import { Team } from "@backend/dbTypes";
-import { TeamFrontEnd, selectionParam } from "@backend/frontEnd" ;
+
+import {selectionParam } from "@backend/frontEnd" ;
 import { dataResponse } from "@backend/HTTPtypes";
+import { Team } from "@backend/dbTypes";
 
 
-export function DriverSelectionCard(props:{userData:dataResponse, selectionParam:selectionParam, driverOptions:JSX.Element[], savedTeam:TeamFrontEnd|undefined, updateTeamHandler:<K extends keyof TeamFrontEnd, V extends TeamFrontEnd[K]>(key: K, value: V)=>void}){
+export function DriverSelectionCard(props:{userData:dataResponse, selectionParam:selectionParam, driverOptions:JSX.Element[], savedTeam:Team|undefined, updateTeamHandler:<K extends keyof Team, V extends Team[K]>(key: K, value: V)=>void}){
 
     let currentSelection = 'hidden'
     if(props.savedTeam){
         const savedTeamdriverId = props.savedTeam[props.selectionParam.dbSelection]
         if(savedTeamdriverId){
-            currentSelection = getDriverNamefromID(savedTeamdriverId)
+            currentSelection = getDriverNamefromID(savedTeamdriverId as number)
         }
     }
     const [selection, setSelection] = useState<string>(currentSelection)

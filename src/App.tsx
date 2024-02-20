@@ -1,24 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
 import './App.css';
-import { SignUpPage } from './pages/signUpPage/signUpPage';
-import { apiSportsDriver } from '@backend/apiSportsResponseTypes';
-import { TeamCreationPage } from './pages/teamPages/teamCreationPage';
-import { LeagueRankingPage } from './pages/leagueRankingPage/leagueRankingPage';
-import { League, Team } from '@backend/dbTypes';
-import { TeamPointPage } from './pages/teamPages/teamPointsPage';
 import { LeaguePage } from './pages/LeaguePage/leaguePage';
 import { NavBar } from './Util/UI/navBar/navBar';
 import { dataResponse } from '@backend/HTTPtypes';
-import { login, refreshToken } from './apis/auth';
 import { getData } from './apis/user';
-import { AuthenticationResultType, } from '@aws-sdk/client-cognito-identity-provider';
 import { TeamPageBase } from './pages/teamPages/teamPageBase';
 import { AccountPage } from './pages/accountPage/accountPage';
 import { fetchAuthSession } from '@aws-amplify/auth';
 import { Amplify, } from 'aws-amplify';
-import type { WithAuthenticatorProps } from '@aws-amplify/ui-react';
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import {AuthUser} from 'aws-amplify/auth'
@@ -45,7 +34,6 @@ function App(props:{signOut:(data?: AuthEventData | undefined) => void, user:Aut
   const [state, setState] = useState(States.Team);
   const [userData, setUserData] = useState<dataResponse>();
   const [accessToken, setAccesstoken] = useState<string>();
-  const [errorState, setErrorState] = useState<string>();
 
   useEffect(() => { //download user data from sever when page loads
     
@@ -80,18 +68,18 @@ function App(props:{signOut:(data?: AuthEventData | undefined) => void, user:Aut
     try {
       if (props.user) {
         const session = await fetchAuthSession()
-        setAccesstoken(session.tokens?.accessToken.toString()!)
+        setAccesstoken(session.tokens?.accessToken.toString())
         const res = await getData(accessToken!);
       
         if (typeof res == 'string') {
-          setErrorState(res);
+          console.log(res);
           return;
         }
         setUserData(res);
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
-        setErrorState(err.message);
+        console.log(err);
       }
     }}
   
@@ -143,9 +131,7 @@ function App(props:{signOut:(data?: AuthEventData | undefined) => void, user:Aut
 
   let page: React.ReactNode;
 
-  if (state == States.Home) {
 
-  }
   if (userData && accessToken) {
     if (state == States.Leagues) {
       page = <LeaguePage userData={userData} authentication={accessToken} reloadData={initGetData}></LeaguePage>;

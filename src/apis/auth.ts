@@ -1,5 +1,5 @@
 import {authenticationRequest, newUserRequest, confirmUserRequest} from '@backend/HTTPtypes'
-import {InitiateAuthResponse, ConfirmSignUpResponse, AuthenticationResultType} from 'aws-sdk/clients/cognitoidentityserviceprovider'
+import {InitiateAuthResponse, AuthenticationResultType} from 'aws-sdk/clients/cognitoidentityserviceprovider'
 import { SignUpCommandOutput,} from '@aws-sdk/client-cognito-identity-provider/dist-types/commands/SignUpCommand';
 import {newUserRoute} from './00routes'
 

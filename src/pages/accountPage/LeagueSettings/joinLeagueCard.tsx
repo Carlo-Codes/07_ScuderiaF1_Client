@@ -1,11 +1,10 @@
 import {Card} from '../../../Util/card/card'
-import {League} from '@backend/dbTypes'
 import './leaguesSettings.css'
 import { dataResponse, joinLeagueRequest } from '@backend/HTTPtypes';
 import { CustomTextInput } from '../../../Util/input/input';
 import { useState } from 'react';
 import { joinUserToLeague } from '../../../apis/user';
-import { AuthenticationResultType } from 'aws-sdk/clients/cognitoidentityserviceprovider';
+
 
 export function JoinLeagueCard(props:{userData:dataResponse, authentication:string, reloadData:() => Promise<void>}){
     const [inviteCode, setInviteCode] = useState('')
