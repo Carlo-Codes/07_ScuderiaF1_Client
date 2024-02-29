@@ -7,7 +7,7 @@ export function TrackCard(props:{trackName:string|undefined, nextRaceHandler:()=
             <div className="trackCardInternals">
                 <div className="title">{props.trackName}</div>
                 <div className="date">{props.date}</div>
-                <img src={`src/assets/circuitImages/${props.trackName}.png`}></img>
+                <img src={`./assets/circuitImages/${props.trackName}.png`}></img>
             </div>    
         
         <div className="arrow" onClick={props.nextRaceHandler}>&#129094;</div>

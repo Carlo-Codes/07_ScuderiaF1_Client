@@ -12,13 +12,20 @@ export function LeaguesCard(props:{userData:dataResponse, authentication:string,
 
     
     const [userTeamsTotalPoints, setUserTeamsTotalPoints] = useState<userTeamsTotalPoints[]>()
-    const [selectedLeagueId, setSelectedLeagueId] = useState<number>(props.userData.participatingLeague[0].id)
+    const [selectedLeagueId, setSelectedLeagueId] = useState<number>()
 
 
     useEffect(()=>{
         generateLeagueData()
         
     }, [selectedLeagueId])
+
+    useEffect(()=>{
+        if(props.userData.participatingLeague[0]){
+            setSelectedLeagueId(props.userData.participatingLeague[0].id)
+        }
+    },[])
+
 
     interface userTeamsTotalPoints{
         username : string,
@@ -41,7 +48,7 @@ export function LeaguesCard(props:{userData:dataResponse, authentication:string,
    
 
     async function getTeamsinSelectedLeague(){
-        if(props.authentication){
+        if(props.authentication && selectedLeagueId){
 
             const req:getLeagueDataReq = {
                 id: selectedLeagueId,
@@ -57,7 +64,7 @@ export function LeaguesCard(props:{userData:dataResponse, authentication:string,
         }
     }
     async function getUsersInSelectedLeague(){
-        if(props.authentication){
+        if(props.authentication && selectedLeagueId){
 
             const req:getUsersinLeageReq = {
                 id: selectedLeagueId,
